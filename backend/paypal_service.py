@@ -121,6 +121,13 @@ class PayPalService:
             if response.status_code == 201:
                 invoice = response.json()
                 invoice_id = invoice.get('id')
+                
+                # If ID not in response body, extract from location header
+                if not invoice_id:
+                    location = response.headers.get('location', '')
+                    if location and '/invoices/' in location:
+                        invoice_id = location.split('/invoices/')[-1]
+                
                 logger.info(f"Successfully created PayPal invoice: {invoice_id}")
                 
                 # Send the invoice
