@@ -79,6 +79,72 @@ async def get_status_checks():
     
     return status_checks
 
+
+# Contact Form Endpoint
+@api_router.post("/contact", response_model=ContactResponse)
+async def create_contact_submission(input: ContactSubmissionCreate):
+    try:
+        # Create contact submission object
+        contact_dict = input.model_dump()
+        contact_obj = ContactSubmission(**contact_dict)
+        
+        # Save to database
+        await db.contact_submissions.insert_one(contact_obj.model_dump())
+        
+        logger.info(f"Contact submission created: {contact_obj.id}")
+        
+        return ContactResponse(
+            success=True,
+            message="Thank you! We'll get back to you soon."
+        )
+    except Exception as e:
+        logger.error(f"Error creating contact submission: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# PayPal Invoice Creation Endpoint
+@api_router.post("/create-invoice", response_model=InvoiceResponse)
+async def create_invoice(input: InvoiceRequestCreate):
+    try:
+        # Create invoice request in PayPal
+        result = paypal_service.create_invoice(
+            customer_email=input.customerEmail,
+            description=input.description,
+            amount=input.amount
+        )
+        
+        if not result.get('success'):
+            raise HTTPException(
+                status_code=400,
+                detail=result.get('error', 'Failed to create invoice')
+            )
+        
+        # Save invoice request to database
+        invoice_obj = InvoiceRequest(
+            customer_email=input.customerEmail,
+            description=input.description,
+            amount=input.amount,
+            paypal_invoice_id=result.get('invoice_id'),
+            paypal_invoice_url=result.get('invoice_url'),
+            status='sent'
+        )
+        
+        await db.invoice_requests.insert_one(invoice_obj.model_dump())
+        
+        logger.info(f"Invoice created: {invoice_obj.id} - PayPal ID: {result.get('invoice_id')}")
+        
+        return InvoiceResponse(
+            success=True,
+            message="Invoice created! Check your email for the payment link.",
+            invoiceUrl=result.get('invoice_url'),
+            invoiceId=result.get('invoice_id')
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating invoice: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
