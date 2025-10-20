@@ -41,6 +41,22 @@ paypal_service = PayPalService()
 # Initialize Email service
 email_service = EmailService()
 
+# Initialize Payment Monitor
+payment_monitor = PaymentMonitorService(db, paypal_service, email_service)
+
+# Initialize scheduler for automatic invoice creation
+scheduler = AsyncIOScheduler()
+
+async def check_payments_job():
+    """Background job to check pending payments"""
+    await payment_monitor.check_pending_payments()
+
+# Schedule job to run every 10 minutes
+scheduler.add_job(check_payments_job, 'interval', minutes=10, id='payment_monitor')
+scheduler.start()
+
+logger.info("✅ Payment monitoring scheduler started (runs every 10 minutes)")
+
 # Create the main app without a prefix
 app = FastAPI()
 
