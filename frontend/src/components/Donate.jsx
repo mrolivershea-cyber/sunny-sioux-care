@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Heart } from 'lucide-react';
 
 const Donate = () => {
+  const buttonRendered = useRef(false);
+
   useEffect(() => {
+    if (buttonRendered.current) return;
+    
     // Load PayPal Donate SDK
     const script = document.createElement('script');
     script.src = 'https://www.paypalobjects.com/donate/sdk/donate-sdk.js';
@@ -11,7 +15,7 @@ const Donate = () => {
     script.async = true;
     
     script.onload = () => {
-      if (window.PayPal && window.PayPal.Donation) {
+      if (window.PayPal && window.PayPal.Donation && !buttonRendered.current) {
         window.PayPal.Donation.Button({
           env: 'production',
           hosted_button_id: 'B6XLRY6MY435A',
@@ -21,6 +25,7 @@ const Donate = () => {
             title: 'PayPal - The safer, easier way to pay online!',
           }
         }).render('#donate-button');
+        buttonRendered.current = true;
       }
     };
     
@@ -58,7 +63,7 @@ const Donate = () => {
                   exceptional care.
                 </p>
                 
-                {/* PayPal Donate Button Container - Centered and Large */}
+                {/* PayPal Donate Button Container - Single Button */}
                 <div className="flex justify-center py-6">
                   <div id="donate-button"></div>
                 </div>
