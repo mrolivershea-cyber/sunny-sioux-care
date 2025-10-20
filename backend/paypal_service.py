@@ -137,12 +137,17 @@ class PayPalService:
                 invoice_details = self.get_invoice_details(invoice_id)
                 
                 if invoice_details:
-                    # Find the payment link
+                    # Find the payment link - first check metadata for recipient_view_url
                     payment_link = None
-                    for link in invoice_details.get('links', []):
-                        if link.get('rel') == 'payer-view':
-                            payment_link = link.get('href')
-                            break
+                    metadata = invoice_details.get('detail', {}).get('metadata', {})
+                    payment_link = metadata.get('recipient_view_url')
+                    
+                    # If not found in metadata, check links for payer-view
+                    if not payment_link:
+                        for link in invoice_details.get('links', []):
+                            if link.get('rel') == 'payer-view':
+                                payment_link = link.get('href')
+                                break
                     
                     if send_result['success']:
                         return {
