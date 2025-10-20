@@ -269,7 +269,15 @@ class BackendTester:
         
         try:
             import sys
+            import os
             sys.path.append('/app/backend')
+            
+            # Load environment variables
+            from dotenv import load_dotenv
+            from pathlib import Path
+            ROOT_DIR = Path('/app/backend')
+            load_dotenv(ROOT_DIR / '.env')
+            
             from paypal_service import PayPalService
             
             paypal_service = PayPalService()
