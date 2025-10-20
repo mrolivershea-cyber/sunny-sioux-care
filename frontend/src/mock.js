@@ -3,11 +3,10 @@
 export const siteInfo = {
   name: 'Sunny Sioux Care',
   tagline: 'Where Little Hearts Grow Big Dreams',
-  address: '2110 Summit St, Unit B1',
+  address: '2110 Summit St',
   city: 'Sioux City',
   state: 'IA',
   zip: '51104',
-  phone: '(712) 555-0123',
   email: 'info@sunnysiouxcare.com',
   hours: 'Monday - Friday: 6:00 AM - 6:00 PM'
 };
