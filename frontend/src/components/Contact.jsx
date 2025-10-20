@@ -15,7 +15,6 @@ const Contact = () => {
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
-    phone: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
