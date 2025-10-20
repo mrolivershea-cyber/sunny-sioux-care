@@ -81,10 +81,6 @@ const Header = () => {
 
           {/* Contact Info & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-sm text-slate-600">
-              <Phone className="w-4 h-4" />
-              <span>{siteInfo.phone}</span>
-            </div>
             <Button
               onClick={() => scrollToSection('enrollment')}
               className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
