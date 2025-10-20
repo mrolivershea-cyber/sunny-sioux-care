@@ -29,6 +29,9 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# Initialize PayPal service
+paypal_service = PayPalService()
+
 # Create the main app without a prefix
 app = FastAPI()
 
