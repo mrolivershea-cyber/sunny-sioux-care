@@ -138,6 +138,57 @@ export const testimonials = [
   }
 ];
 
+export const pricingPlans = [
+  {
+    id: 1,
+    name: 'Infant Care',
+    age: '6 weeks - 12 months',
+    price: 1200,
+    period: 'month',
+    description: 'Premium care for your youngest ones',
+    features: [
+      'Low 1:4 child-to-teacher ratio',
+      'Daily activity reports',
+      'Flexible feeding schedules',
+      'Safe sleep environment',
+      'Meals & snacks included'
+    ],
+    popular: false
+  },
+  {
+    id: 2,
+    name: 'Toddler & Preschool',
+    age: '1 - 5 years',
+    price: 950,
+    period: 'month',
+    description: 'Active learning and kindergarten prep',
+    features: [
+      'Educational curriculum',
+      'Music, arts & STEM activities',
+      'Social-emotional development',
+      'Outdoor playtime',
+      'Meals & snacks included'
+    ],
+    popular: true
+  },
+  {
+    id: 3,
+    name: 'School-Age Care',
+    age: '5 - 12 years',
+    price: 600,
+    period: 'month',
+    description: 'Before & after school program',
+    features: [
+      'Homework assistance',
+      'Sports & recreational activities',
+      'Transportation available',
+      'Healthy snacks provided',
+      'Flexible pickup times'
+    ],
+    popular: false
+  }
+];
+
 export const faqs = [
   {
     id: 1,
