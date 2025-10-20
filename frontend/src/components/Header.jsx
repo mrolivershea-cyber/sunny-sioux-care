@@ -132,10 +132,6 @@ const Header = () => {
               >
                 Contact
               </button>
-              <div className="flex items-center space-x-2 text-sm text-slate-600 py-2">
-                <Phone className="w-4 h-4" />
-                <span>{siteInfo.phone}</span>
-              </div>
               <Button
                 onClick={() => scrollToSection('enrollment')}
                 className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold py-2 rounded-full"
