@@ -79,17 +79,8 @@ const Pricing = () => {
         // Open PayPal link in new tab
         window.open(selectedPlan.paypalUrl, '_blank');
         
-        // Schedule invoice creation after 5 minutes if payment not confirmed
-        setTimeout(async () => {
-          try {
-            await axios.post(`${API}/create-fallback-invoice`, {
-              registrationId: response.data.registrationId
-            });
-            toast.info('Invoice sent to your email as backup');
-          } catch (error) {
-            console.error('Fallback invoice error:', error);
-          }
-        }, 5 * 60 * 1000); // 5 minutes
+        // Server will automatically check payment status after 10 minutes
+        // and send invoice if payment not completed
         
         // Reset and close
         setRegistrationData({ name: '', email: '', phone: '', address: '' });
