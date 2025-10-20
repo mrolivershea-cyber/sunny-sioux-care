@@ -108,27 +108,33 @@ user_problem_statement: |
 backend:
   - task: "Contact form API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "POST /api/contact endpoint created. Saves contact submissions to MongoDB. Not yet tested."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED AND WORKING: API returns success=true, properly validates email, saves all data to MongoDB contact_submissions collection. Tested with real data: name='John Doe', email='john@example.com', phone='(712) 555-1234', message='I'm interested in enrolling my child'."
 
   - task: "PayPal invoice creation API"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py, /app/backend/paypal_service.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "POST /api/create-invoice endpoint created. Integrates with PayPal API v2 to create and send invoices. Returns invoice URL. Not yet tested."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED AND WORKING: PayPal authentication successful, invoice creation working, returns valid invoiceUrl and invoiceId. Fixed issue with extracting invoice ID from location header and recipient_view_url from metadata. Invoices created in DRAFT status with public payment URLs. MongoDB storage verified. Tested with: customerEmail='test@example.com', description='Monthly Tuition - Test', amount=50.00."
 
 frontend:
   - task: "Contact form integration"
