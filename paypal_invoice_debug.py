@@ -101,6 +101,14 @@ def test_invoice_creation():
             invoice_id = invoice.get('id')
             print(f"✅ Invoice created with ID: {invoice_id}")
             
+            # Check if we can extract ID from location header
+            location = response.headers.get('location', '')
+            if location and not invoice_id:
+                # Extract ID from location URL
+                if '/invoices/' in location:
+                    invoice_id = location.split('/invoices/')[-1]
+                    print(f"✅ Extracted invoice ID from location header: {invoice_id}")
+            
             # Try to send the invoice
             if invoice_id:
                 send_url = f"{paypal_service.base_url}/v2/invoicing/invoices/{invoice_id}/send"
