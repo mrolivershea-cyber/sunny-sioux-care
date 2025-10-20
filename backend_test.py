@@ -268,6 +268,8 @@ class BackendTester:
         print("\n🧪 Testing PayPal Authentication...")
         
         try:
+            import sys
+            sys.path.append('/app/backend')
             from paypal_service import PayPalService
             
             paypal_service = PayPalService()
