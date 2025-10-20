@@ -66,10 +66,10 @@ const Header = () => {
               About
             </button>
             <button
-              onClick={() => scrollToSection('gallery')}
+              onClick={() => scrollToSection('pricing')}
               className="text-slate-700 hover:text-orange-500 font-medium transition-colors duration-200"
             >
-              Gallery
+              Pricing
             </button>
             <button
               onClick={() => scrollToSection('contact')}
