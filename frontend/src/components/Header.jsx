@@ -121,10 +121,10 @@ const Header = () => {
                 About
               </button>
               <button
-                onClick={() => scrollToSection('gallery')}
+                onClick={() => scrollToSection('pricing')}
                 className="text-slate-700 hover:text-orange-500 font-medium text-left py-2 transition-colors"
               >
-                Gallery
+                Pricing
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
