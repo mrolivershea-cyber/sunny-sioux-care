@@ -19,6 +19,7 @@ from models import (
     InvoiceResponse
 )
 from paypal_service import PayPalService
+from email_service import EmailService
 
 
 ROOT_DIR = Path(__file__).parent
