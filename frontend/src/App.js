@@ -9,7 +9,8 @@ import Features from "./components/Features";
 import Gallery from "./components/Gallery";
 import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
-import PayPalInvoice from "./components/PayPalInvoice";
+import Pricing from "./components/Pricing";
+import Donate from "./components/Donate";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
@@ -23,7 +24,8 @@ const Home = () => {
       <Gallery />
       <Testimonials />
       <FAQ />
-      <PayPalInvoice />
+      <Pricing />
+      <Donate />
       <Contact />
       <Footer />
     </div>
