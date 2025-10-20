@@ -87,19 +87,6 @@ const Contact = () => {
                   </CardContent>
                 </Card>
 
-                {/* Phone */}
-                <Card className="border-2 hover:border-orange-300 transition-all duration-300">
-                  <CardContent className="p-6 flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-800 mb-1">Phone</h4>
-                      <p className="text-slate-600">{siteInfo.phone}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
                 {/* Email */}
                 <Card className="border-2 hover:border-orange-300 transition-all duration-300">
                   <CardContent className="p-6 flex items-start space-x-4">
