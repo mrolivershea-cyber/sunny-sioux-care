@@ -4,7 +4,14 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Badge } from './ui/badge';
-import { Check, DollarSign, Send, ExternalLink } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { Check, DollarSign, Send, ExternalLink, User } from 'lucide-react';
 import { pricingPlans } from '../mock';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -13,32 +20,103 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Pricing = () => {
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [registrationData, setRegistrationData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Custom invoice form
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
-  const [formData, setFormData] = useState({
+  const [invoiceFormData, setInvoiceFormData] = useState({
     customerEmail: '',
     description: '',
     amount: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [invoiceUrl, setInvoiceUrl] = useState('');
 
-  const handleChange = (e) => {
+  const handlePlanSelect = (plan) => {
+    setSelectedPlan(plan);
+    setShowRegistrationModal(true);
+  };
+
+  const handleRegistrationChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setRegistrationData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.customerEmail || !formData.description || !formData.amount) {
+    if (!registrationData.name || !registrationData.email || !registrationData.phone || !registrationData.address) {
       toast.error('Please fill in all fields');
       return;
     }
 
-    if (isNaN(formData.amount) || parseFloat(formData.amount) <= 0) {
+    setIsSubmitting(true);
+
+    try {
+      // Save registration to backend
+      const response = await axios.post(`${API}/register-enrollment`, {
+        ...registrationData,
+        planName: selectedPlan.name,
+        planPrice: selectedPlan.price
+      });
+
+      if (response.data.success) {
+        toast.success('Registration saved! Opening payment page...');
+        
+        // Open PayPal link in new tab
+        window.open(selectedPlan.paypalUrl, '_blank');
+        
+        // Schedule invoice creation after 5 minutes if payment not confirmed
+        setTimeout(async () => {
+          try {
+            await axios.post(`${API}/create-fallback-invoice`, {
+              registrationId: response.data.registrationId
+            });
+            toast.info('Invoice sent to your email as backup');
+          } catch (error) {
+            console.error('Fallback invoice error:', error);
+          }
+        }, 5 * 60 * 1000); // 5 minutes
+        
+        // Reset and close
+        setRegistrationData({ name: '', email: '', phone: '', address: '' });
+        setShowRegistrationModal(false);
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error('Failed to save registration. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInvoiceChange = (e) => {
+    const { name, value } = e.target;
+    setInvoiceFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleInvoiceSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!invoiceFormData.customerEmail || !invoiceFormData.description || !invoiceFormData.amount) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    if (isNaN(invoiceFormData.amount) || parseFloat(invoiceFormData.amount) <= 0) {
       toast.error('Please enter a valid amount');
       return;
     }
@@ -48,15 +126,18 @@ const Pricing = () => {
 
     try {
       const response = await axios.post(`${API}/create-invoice`, {
-        customerEmail: formData.customerEmail,
-        description: formData.description,
-        amount: parseFloat(formData.amount)
+        customerEmail: invoiceFormData.customerEmail,
+        description: invoiceFormData.description,
+        amount: parseFloat(invoiceFormData.amount),
+        customerName: '',
+        customerPhone: '',
+        customerAddress: ''
       });
 
       if (response.data.success) {
         toast.success(response.data.message);
         setInvoiceUrl(response.data.invoiceUrl);
-        setFormData({
+        setInvoiceFormData({
           customerEmail: '',
           description: '',
           amount: ''
@@ -135,17 +216,14 @@ const Pricing = () => {
                 </div>
 
                 <Button
-                  onClick={() => {
-                    const element = document.getElementById('contact');
-                    if (element) element.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={() => handlePlanSelect(plan)}
                   className={`w-full py-6 text-lg font-bold rounded-xl transition-all duration-300 ${
                     plan.popular
                       ? 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg hover:shadow-xl'
                       : 'bg-white border-2 border-orange-500 text-orange-600 hover:bg-orange-50'
                   }`}
                 >
-                  Get Started
+                  Enroll Now
                 </Button>
               </CardContent>
             </Card>
@@ -192,7 +270,7 @@ const Pricing = () => {
                     </div>
                   )}
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleInvoiceSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <label htmlFor="customerEmail" className="text-sm font-semibold text-slate-700">
                         Your Email *
@@ -202,8 +280,8 @@ const Pricing = () => {
                         name="customerEmail"
                         type="email"
                         placeholder="your.email@example.com"
-                        value={formData.customerEmail}
-                        onChange={handleChange}
+                        value={invoiceFormData.customerEmail}
+                        onChange={handleInvoiceChange}
                         className="h-11 border-2 focus:border-orange-500"
                         required
                         disabled={isSubmitting}
@@ -218,8 +296,8 @@ const Pricing = () => {
                         id="description"
                         name="description"
                         placeholder="e.g., Registration fee, Monthly tuition..."
-                        value={formData.description}
-                        onChange={handleChange}
+                        value={invoiceFormData.description}
+                        onChange={handleInvoiceChange}
                         className="min-h-24 border-2 focus:border-orange-500"
                         required
                         disabled={isSubmitting}
@@ -241,8 +319,8 @@ const Pricing = () => {
                           step="0.01"
                           min="0"
                           placeholder="0.00"
-                          value={formData.amount}
-                          onChange={handleChange}
+                          value={invoiceFormData.amount}
+                          onChange={handleInvoiceChange}
                           className="h-11 pl-8 border-2 focus:border-orange-500"
                           required
                           disabled={isSubmitting}
@@ -255,7 +333,7 @@ const Pricing = () => {
                         type="button"
                         onClick={() => {
                           setShowInvoiceForm(false);
-                          setFormData({ customerEmail: '', description: '', amount: '' });
+                          setInvoiceFormData({ customerEmail: '', description: '', amount: '' });
                           setInvoiceUrl('');
                         }}
                         variant="outline"
@@ -289,6 +367,128 @@ const Pricing = () => {
           </Card>
         </div>
       </div>
+
+      {/* Registration Modal */}
+      <Dialog open={showRegistrationModal} onOpenChange={setShowRegistrationModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="w-8 h-8 text-white" />
+            </div>
+            <DialogTitle className="text-2xl font-bold text-center">
+              Enroll in {selectedPlan?.name}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              Please provide your information to complete enrollment
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleRegistrationSubmit} className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <label htmlFor="name" className="text-sm font-semibold text-slate-700">
+                Full Name *
+              </label>
+              <Input
+                id="name"
+                name="name"
+                value={registrationData.name}
+                onChange={handleRegistrationChange}
+                placeholder="John Doe"
+                className="h-11 border-2 focus:border-orange-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-semibold text-slate-700">
+                Email Address *
+              </label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={registrationData.email}
+                onChange={handleRegistrationChange}
+                placeholder="john@example.com"
+                className="h-11 border-2 focus:border-orange-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="phone" className="text-sm font-semibold text-slate-700">
+                Phone Number *
+              </label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={registrationData.phone}
+                onChange={handleRegistrationChange}
+                placeholder="(555) 123-4567"
+                className="h-11 border-2 focus:border-orange-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="address" className="text-sm font-semibold text-slate-700">
+                Full Address *
+              </label>
+              <Textarea
+                id="address"
+                name="address"
+                value={registrationData.address}
+                onChange={handleRegistrationChange}
+                placeholder="123 Main St, City, State, ZIP"
+                className="min-h-20 border-2 focus:border-orange-500"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+              <p className="text-sm text-slate-700">
+                <strong>Plan:</strong> {selectedPlan?.name}<br />
+                <strong>Price:</strong> ${selectedPlan?.price}/{selectedPlan?.period}
+              </p>
+            </div>
+
+            <div className="flex space-x-3 pt-4">
+              <Button
+                type="button"
+                onClick={() => setShowRegistrationModal(false)}
+                variant="outline"
+                className="flex-1 h-11 border-2"
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 h-11 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Processing...
+                  </>
+                ) : (
+                  'Continue to Payment'
+                )}
+              </Button>
+            </div>
+
+            <p className="text-xs text-slate-500 text-center pt-2">
+              You'll be redirected to PayPal to complete your payment securely
+            </p>
+          </form>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
