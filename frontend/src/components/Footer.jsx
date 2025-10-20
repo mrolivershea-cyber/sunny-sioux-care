@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from 'lucide-react';
+import { MapPin, Mail, Facebook, Instagram, Twitter } from 'lucide-react';
 import { siteInfo } from '../mock';
 
 const Footer = () => {
