@@ -133,23 +133,32 @@ class PayPalService:
                 # Send the invoice
                 send_result = self.send_invoice(invoice_id)
                 
-                if send_result['success']:
-                    # Get invoice details to retrieve payment link
-                    invoice_details = self.get_invoice_details(invoice_id)
+                # Get invoice details to retrieve payment link (regardless of send status)
+                invoice_details = self.get_invoice_details(invoice_id)
+                
+                if invoice_details:
+                    # Find the payment link
+                    payment_link = None
+                    for link in invoice_details.get('links', []):
+                        if link.get('rel') == 'payer-view':
+                            payment_link = link.get('href')
+                            break
                     
-                    if invoice_details:
-                        # Find the payment link
-                        payment_link = None
-                        for link in invoice_details.get('links', []):
-                            if link.get('rel') == 'payer-view':
-                                payment_link = link.get('href')
-                                break
-                        
+                    if send_result['success']:
                         return {
                             'success': True,
                             'invoice_id': invoice_id,
                             'invoice_url': payment_link,
                             'message': 'Invoice created and sent successfully'
+                        }
+                    else:
+                        # Invoice created but couldn't be sent automatically
+                        return {
+                            'success': True,
+                            'invoice_id': invoice_id,
+                            'invoice_url': payment_link,
+                            'message': 'Invoice created successfully. Manual sending may be required.',
+                            'send_error': send_result.get('error')
                         }
                 
                 return send_result
