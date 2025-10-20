@@ -114,7 +114,9 @@ const Pricing = () => {
   const handleInvoiceSubmit = async (e) => {
     e.preventDefault();
     
-    if (!invoiceFormData.customerEmail || !invoiceFormData.description || !invoiceFormData.amount) {
+    if (!invoiceFormData.customerName || !invoiceFormData.customerEmail || 
+        !invoiceFormData.customerPhone || !invoiceFormData.customerAddress ||
+        !invoiceFormData.description || !invoiceFormData.amount) {
       toast.error('Please fill in all fields');
       return;
     }
@@ -130,18 +132,21 @@ const Pricing = () => {
     try {
       const response = await axios.post(`${API}/create-invoice`, {
         customerEmail: invoiceFormData.customerEmail,
+        customerName: invoiceFormData.customerName,
+        customerPhone: invoiceFormData.customerPhone,
+        customerAddress: invoiceFormData.customerAddress,
         description: invoiceFormData.description,
-        amount: parseFloat(invoiceFormData.amount),
-        customerName: '',
-        customerPhone: '',
-        customerAddress: ''
+        amount: parseFloat(invoiceFormData.amount)
       });
 
       if (response.data.success) {
         toast.success(response.data.message);
         setInvoiceUrl(response.data.invoiceUrl);
         setInvoiceFormData({
+          customerName: '',
           customerEmail: '',
+          customerPhone: '',
+          customerAddress: '',
           description: '',
           amount: ''
         });
