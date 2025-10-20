@@ -33,7 +33,10 @@ const Pricing = () => {
   // Custom invoice form
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
   const [invoiceFormData, setInvoiceFormData] = useState({
+    customerName: '',
     customerEmail: '',
+    customerPhone: '',
+    customerAddress: '',
     description: '',
     amount: ''
   });
