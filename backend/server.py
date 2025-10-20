@@ -145,6 +145,15 @@ async def create_invoice(input: InvoiceRequestCreate):
         
         logger.info(f"Invoice created: {invoice_obj.id} - PayPal ID: {result.get('invoice_id')}")
         
+        # Send confirmation email to customer
+        if result.get('invoice_url'):
+            email_service.send_invoice_confirmation(
+                customer_email=input.customerEmail,
+                description=input.description,
+                amount=input.amount,
+                invoice_url=result.get('invoice_url')
+            )
+        
         return InvoiceResponse(
             success=True,
             message="Invoice created! Check your email for the payment link.",
