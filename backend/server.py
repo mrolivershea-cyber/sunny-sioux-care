@@ -154,6 +154,7 @@ async def create_enrollment(input: EnrollmentRegistrationCreate):
         await db.enrollment_registrations.insert_one(enrollment_obj.model_dump())
         
         logger.info(f"Enrollment registration created: {enrollment_obj.id}")
+        logger.info(f"⏰ Payment monitor will check status in 10 minutes")
         
         return EnrollmentResponse(
             success=True,
@@ -163,68 +164,6 @@ async def create_enrollment(input: EnrollmentRegistrationCreate):
     except Exception as e:
         logger.error(f"Error creating enrollment registration: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# Fallback Invoice Endpoint (called after 5 minutes if no payment)
-@api_router.post("/create-fallback-invoice")
-async def create_fallback_invoice(data: dict):
-    try:
-        registration_id = data.get('registrationId')
-        
-        # Get registration details
-        registration = await db.enrollment_registrations.find_one({"id": registration_id})
-        
-        if not registration or registration.get('payment_status') != 'pending':
-            # Payment already completed or invoice already sent
-            return {"success": False, "message": "Invoice not needed"}
-        
-        # Create invoice
-        result = paypal_service.create_invoice(
-            customer_email=registration['email'],
-            description=f"{registration['plan_name']} - Monthly Enrollment",
-            amount=registration['plan_price']
-        )
-        
-        if result.get('success'):
-            # Update registration
-            await db.enrollment_registrations.update_one(
-                {"id": registration_id},
-                {"$set": {"payment_status": "invoice_sent"}}
-            )
-            
-            # Save invoice record
-            invoice_obj = InvoiceRequest(
-                customer_email=registration['email'],
-                customer_name=registration['name'],
-                customer_phone=registration['phone'],
-                customer_address=registration['address'],
-                description=f"{registration['plan_name']} - Fallback Invoice",
-                amount=registration['plan_price'],
-                paypal_invoice_id=result.get('invoice_id'),
-                paypal_invoice_url=result.get('invoice_url'),
-                status='sent'
-            )
-            
-            await db.invoice_requests.insert_one(invoice_obj.model_dump())
-            
-            # Send email with invoice
-            if result.get('invoice_url'):
-                email_service.send_invoice_confirmation(
-                    customer_email=registration['email'],
-                    description=f"{registration['plan_name']} - Monthly Enrollment",
-                    amount=registration['plan_price'],
-                    invoice_url=result.get('invoice_url')
-                )
-            
-            logger.info(f"Fallback invoice created for registration: {registration_id}")
-            
-            return {"success": True, "message": "Fallback invoice created"}
-        
-        return {"success": False, "message": "Failed to create invoice"}
-        
-    except Exception as e:
-        logger.error(f"Error creating fallback invoice: {str(e)}")
-        return {"success": False, "message": str(e)}
 
 
 # PayPal Invoice Creation Endpoint
