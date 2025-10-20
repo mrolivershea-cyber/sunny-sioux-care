@@ -231,7 +231,7 @@ const Pricing = () => {
                       : 'bg-white border-2 border-orange-500 text-orange-600 hover:bg-orange-50'
                   }`}
                 >
-                  Enroll Now
+                  Select Plan
                 </Button>
               </CardContent>
             </Card>
