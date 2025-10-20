@@ -4,37 +4,69 @@ import { Heart } from 'lucide-react';
 
 const Donate = () => {
   const buttonRendered = useRef(false);
+  const scriptLoaded = useRef(false);
 
   useEffect(() => {
+    // Check if button already rendered
     if (buttonRendered.current) return;
     
-    // Load PayPal Donate SDK
+    // Check if script already loaded
+    if (scriptLoaded.current || window.PayPal?.Donation) {
+      // Script already loaded, just render button
+      if (window.PayPal && window.PayPal.Donation && !buttonRendered.current) {
+        try {
+          window.PayPal.Donation.Button({
+            env: 'production',
+            hosted_button_id: 'B6XLRY6MY435A',
+            image: {
+              src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+              alt: 'Donate with PayPal button',
+              title: 'PayPal - The safer, easier way to pay online!',
+            }
+          }).render('#donate-button');
+          buttonRendered.current = true;
+        } catch (error) {
+          console.log('PayPal button already rendered');
+        }
+      }
+      return;
+    }
+    
+    // Load PayPal Donate SDK for first time
     const script = document.createElement('script');
     script.src = 'https://www.paypalobjects.com/donate/sdk/donate-sdk.js';
     script.charset = 'UTF-8';
     script.async = true;
     
     script.onload = () => {
+      scriptLoaded.current = true;
       if (window.PayPal && window.PayPal.Donation && !buttonRendered.current) {
-        window.PayPal.Donation.Button({
-          env: 'production',
-          hosted_button_id: 'B6XLRY6MY435A',
-          image: {
-            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-            alt: 'Donate with PayPal button',
-            title: 'PayPal - The safer, easier way to pay online!',
-          }
-        }).render('#donate-button');
-        buttonRendered.current = true;
+        try {
+          window.PayPal.Donation.Button({
+            env: 'production',
+            hosted_button_id: 'B6XLRY6MY435A',
+            image: {
+              src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+              alt: 'Donate with PayPal button',
+              title: 'PayPal - The safer, easier way to pay online!',
+            }
+          }).render('#donate-button');
+          buttonRendered.current = true;
+        } catch (error) {
+          console.log('PayPal button render error:', error.message);
+        }
       }
     };
     
-    document.body.appendChild(script);
+    // Only add script if not already present
+    const existingScript = document.querySelector('script[src*="paypalobjects.com/donate"]');
+    if (!existingScript) {
+      document.body.appendChild(script);
+    }
     
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
+      // Cleanup only if component truly unmounts
+      // Don't remove script as it might be needed by other instances
     };
   }, []);
 
