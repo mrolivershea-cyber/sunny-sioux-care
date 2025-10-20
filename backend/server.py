@@ -97,6 +97,14 @@ async def create_contact_submission(input: ContactSubmissionCreate):
         
         logger.info(f"Contact submission created: {contact_obj.id}")
         
+        # Send email notification to admin
+        email_service.send_contact_notification(
+            name=contact_obj.name,
+            email=contact_obj.email,
+            phone=contact_obj.phone or '',
+            message=contact_obj.message
+        )
+        
         return ContactResponse(
             success=True,
             message="Thank you! We'll get back to you soon."
