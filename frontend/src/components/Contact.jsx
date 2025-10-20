@@ -156,22 +156,6 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="phone" className="text-sm font-semibold text-slate-700">
-                      Phone Number
-                    </label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="(555) 123-4567"
-                      className="h-12 border-2 focus:border-orange-500"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-semibold text-slate-700">
                       Message *
                     </label>
