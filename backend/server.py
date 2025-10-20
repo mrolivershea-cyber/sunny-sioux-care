@@ -14,6 +14,9 @@ from models import (
     ContactSubmission,
     ContactSubmissionCreate,
     ContactResponse,
+    EnrollmentRegistration,
+    EnrollmentRegistrationCreate,
+    EnrollmentResponse,
     InvoiceRequest,
     InvoiceRequestCreate,
     InvoiceResponse
