@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Menu, X, Mail } from 'lucide-react';
 import { siteInfo } from '../mock';
 import { Button } from './ui/button';
 
