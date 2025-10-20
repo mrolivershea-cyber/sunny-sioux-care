@@ -440,10 +440,10 @@ const Pricing = () => {
               <User className="w-8 h-8 text-white" />
             </div>
             <DialogTitle className="text-2xl font-bold text-center">
-              Enroll in {selectedPlan?.name}
+              Register for {selectedPlan?.name}
             </DialogTitle>
             <DialogDescription className="text-center">
-              Please provide your information to complete enrollment
+              Please provide your information to proceed with registration
             </DialogDescription>
           </DialogHeader>
 
