@@ -146,6 +146,7 @@ export const pricingPlans = [
     price: 1200,
     period: 'month',
     description: 'Premium care for your youngest ones',
+    paypalUrl: 'https://www.paypal.com/ncp/payment/9JJPVWE34GT22',
     features: [
       'Low 1:4 child-to-teacher ratio',
       'Daily activity reports',
@@ -162,6 +163,7 @@ export const pricingPlans = [
     price: 950,
     period: 'month',
     description: 'Active learning and kindergarten prep',
+    paypalUrl: 'https://www.paypal.com/ncp/payment/ULN9NX35HA8SY',
     features: [
       'Educational curriculum',
       'Music, arts & STEM activities',
@@ -178,6 +180,7 @@ export const pricingPlans = [
     price: 600,
     period: 'month',
     description: 'Before & after school program',
+    paypalUrl: 'https://www.paypal.com/ncp/payment/DHYRTHK8ZUN8C',
     features: [
       'Homework assistance',
       'Sports & recreational activities',
