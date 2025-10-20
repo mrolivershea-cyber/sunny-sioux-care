@@ -229,6 +229,9 @@ async def create_invoice(input: InvoiceRequestCreate):
         # Save invoice request to database
         invoice_obj = InvoiceRequest(
             customer_email=input.customerEmail,
+            customer_name=input.customerName or '',
+            customer_phone=input.customerPhone or '',
+            customer_address=input.customerAddress or '',
             description=input.description,
             amount=input.amount,
             paypal_invoice_id=result.get('invoice_id'),
