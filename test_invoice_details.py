@@ -40,9 +40,19 @@ def test_get_invoice_details():
     if invoice_details:
         print(f"✅ Got invoice details:")
         print(f"Status: {invoice_details.get('status')}")
-        print(f"Links: {invoice_details.get('links', [])}")
+        print(f"Full response: {invoice_details}")
         
-        # Find the payment link
+        # Check for recipient_view_url in metadata
+        metadata = invoice_details.get('metadata', {})
+        recipient_view_url = metadata.get('recipient_view_url')
+        
+        if recipient_view_url:
+            print(f"✅ Found recipient view URL: {recipient_view_url}")
+        else:
+            print("❌ No recipient_view_url found in metadata")
+        
+        # Also check links
+        print(f"Links: {invoice_details.get('links', [])}")
         payment_link = None
         for link in invoice_details.get('links', []):
             print(f"  Link: {link.get('rel')} -> {link.get('href')}")
