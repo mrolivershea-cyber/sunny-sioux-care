@@ -33,6 +33,9 @@ db = client[os.environ['DB_NAME']]
 # Initialize PayPal service
 paypal_service = PayPalService()
 
+# Initialize Email service
+email_service = EmailService()
+
 # Create the main app without a prefix
 app = FastAPI()
 
