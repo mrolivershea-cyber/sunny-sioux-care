@@ -280,8 +280,24 @@ const Pricing = () => {
 
                   <form onSubmit={handleInvoiceSubmit} className="space-y-4">
                     <div className="space-y-2">
+                      <label htmlFor="customerName" className="text-sm font-semibold text-slate-700">
+                        Full Name *
+                      </label>
+                      <Input
+                        id="customerName"
+                        name="customerName"
+                        placeholder="John Doe"
+                        value={invoiceFormData.customerName}
+                        onChange={handleInvoiceChange}
+                        className="h-11 border-2 focus:border-orange-500"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
                       <label htmlFor="customerEmail" className="text-sm font-semibold text-slate-700">
-                        Your Email *
+                        Email Address *
                       </label>
                       <Input
                         id="customerEmail"
@@ -291,6 +307,39 @@ const Pricing = () => {
                         value={invoiceFormData.customerEmail}
                         onChange={handleInvoiceChange}
                         className="h-11 border-2 focus:border-orange-500"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="customerPhone" className="text-sm font-semibold text-slate-700">
+                        Phone Number *
+                      </label>
+                      <Input
+                        id="customerPhone"
+                        name="customerPhone"
+                        type="tel"
+                        placeholder="(555) 123-4567"
+                        value={invoiceFormData.customerPhone}
+                        onChange={handleInvoiceChange}
+                        className="h-11 border-2 focus:border-orange-500"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="customerAddress" className="text-sm font-semibold text-slate-700">
+                        Full Address *
+                      </label>
+                      <Textarea
+                        id="customerAddress"
+                        name="customerAddress"
+                        placeholder="123 Main St, City, State, ZIP"
+                        value={invoiceFormData.customerAddress}
+                        onChange={handleInvoiceChange}
+                        className="min-h-20 border-2 focus:border-orange-500"
                         required
                         disabled={isSubmitting}
                       />
@@ -341,7 +390,14 @@ const Pricing = () => {
                         type="button"
                         onClick={() => {
                           setShowInvoiceForm(false);
-                          setInvoiceFormData({ customerEmail: '', description: '', amount: '' });
+                          setInvoiceFormData({ 
+                            customerName: '',
+                            customerEmail: '', 
+                            customerPhone: '',
+                            customerAddress: '',
+                            description: '', 
+                            amount: '' 
+                          });
                           setInvoiceUrl('');
                         }}
                         variant="outline"
