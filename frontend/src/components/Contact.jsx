@@ -42,7 +42,7 @@ const Contact = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        setFormData({ name: '', email: '', phone: '', message: '' });
+        setFormData({ name: '', email: '', message: '' });
       }
     } catch (error) {
       console.error('Contact form error:', error);
