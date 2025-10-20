@@ -37,7 +37,6 @@ const Contact = () => {
       const response = await axios.post(`${API}/contact`, {
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
         message: formData.message
       });
 
