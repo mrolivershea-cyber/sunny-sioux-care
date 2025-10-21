@@ -20,8 +20,8 @@ class PaymentMonitorService:
         try:
             logger.info("Starting payment monitoring check...")
             
-            # Find registrations older than 10 minutes with pending status
-            ten_minutes_ago = datetime.utcnow() - timedelta(minutes=10)
+            # Find registrations older than 3 minutes with pending status
+            three_minutes_ago = datetime.utcnow() - timedelta(minutes=3)
             
             pending_registrations = await self.db.enrollment_registrations.find({
                 "payment_status": "pending",
