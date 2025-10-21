@@ -186,6 +186,8 @@ Full deployment instructions available in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE
 ## 🔐 Security
 
 - HTTPS enforced with Let's Encrypt SSL
+- Email authentication with DKIM, SPF, and DMARC
+- Encrypted SMTP/IMAP connections (TLS/SSL)
 - Environment variables for sensitive data
 - MongoDB authentication
 - CORS configuration
