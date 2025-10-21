@@ -85,3 +85,7 @@ yarn-error.log
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+-e 
+# Environment files
+*.env
+*.env.*
