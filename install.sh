@@ -81,9 +81,9 @@ if [ ! -f /swapfile ]; then
     mkswap /swapfile
     swapon /swapfile
     echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
-    echo -e "${GREEN}✓ SWAP создан${NC}"
+    echo -e "${GREEN}[OK] SWAP created${NC}"
 else
-    echo -e "${GREEN}✓ SWAP уже существует${NC}"
+    echo -e "${GREEN}[OK] SWAP already exists${NC}"
 fi
 
 # 2. Обновление системы
