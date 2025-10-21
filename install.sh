@@ -258,7 +258,7 @@ rm -f /etc/nginx/sites-enabled/default
 nginx -t
 systemctl reload nginx
 
-echo -e "${GREEN}✓ Nginx настроен${NC}"
+echo -e "${GREEN}[OK] Nginx configured${NC}"
 
 # Запуск Backend
 echo ""
