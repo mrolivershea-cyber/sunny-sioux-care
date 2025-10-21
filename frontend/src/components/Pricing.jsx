@@ -560,20 +560,73 @@ const Pricing = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="address" className="text-sm font-semibold text-slate-700">
-                Full Address *
-              </label>
-              <Textarea
-                id="address"
-                name="address"
-                value={registrationData.address}
-                onChange={handleRegistrationChange}
-                placeholder="123 Main St, City, State, ZIP"
-                className="min-h-20 border-2 focus:border-orange-500"
-                required
-                disabled={isSubmitting}
-              />
+            {/* Address Fields */}
+            <div className="space-y-4 pt-2">
+              <h4 className="text-sm font-semibold text-slate-700 border-b pb-2">Address</h4>
+              
+              <div className="space-y-2">
+                <label htmlFor="reg-street" className="text-sm font-medium text-slate-700">
+                  Street Address
+                </label>
+                <Input
+                  id="reg-street"
+                  name="street"
+                  placeholder="123 Main Street"
+                  value={registrationData.street}
+                  onChange={handleRegistrationChange}
+                  className="h-11 border-2 focus:border-orange-500"
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="reg-city" className="text-sm font-medium text-slate-700">
+                    City
+                  </label>
+                  <Input
+                    id="reg-city"
+                    name="city"
+                    placeholder="Sioux City"
+                    value={registrationData.city}
+                    onChange={handleRegistrationChange}
+                    className="h-11 border-2 focus:border-orange-500"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="reg-state" className="text-sm font-medium text-slate-700">
+                    State
+                  </label>
+                  <Input
+                    id="reg-state"
+                    name="state"
+                    placeholder="IA"
+                    maxLength="2"
+                    value={registrationData.state.toUpperCase()}
+                    onChange={handleRegistrationChange}
+                    className="h-11 border-2 focus:border-orange-500"
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="reg-zip" className="text-sm font-medium text-slate-700">
+                  ZIP Code
+                </label>
+                <Input
+                  id="reg-zip"
+                  name="zip"
+                  placeholder="51104"
+                  maxLength="10"
+                  value={registrationData.zip}
+                  onChange={handleRegistrationChange}
+                  className="h-11 border-2 focus:border-orange-500"
+                  disabled={isSubmitting}
+                />
+              </div>
             </div>
 
             <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
