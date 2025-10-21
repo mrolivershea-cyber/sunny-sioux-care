@@ -64,17 +64,22 @@ const Pricing = () => {
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
     
-    if (!registrationData.name || !registrationData.email || !registrationData.phone || !registrationData.address) {
-      toast.error('Please fill in all fields');
+    if (!registrationData.name || !registrationData.email || !registrationData.phone) {
+      toast.error('Please fill in all required fields');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
+      const fullAddress = `${registrationData.street}, ${registrationData.city}, ${registrationData.state} ${registrationData.zip}`.trim();
+      
       // Save registration to backend
       const response = await axios.post(`${API}/register-enrollment`, {
-        ...registrationData,
+        name: registrationData.name,
+        email: registrationData.email,
+        phone: registrationData.phone,
+        address: fullAddress,
         planName: selectedPlan.name,
         planPrice: selectedPlan.price
       });
@@ -85,11 +90,11 @@ const Pricing = () => {
         // Open PayPal link in new tab
         window.open(selectedPlan.paypalUrl, '_blank');
         
-        // Server will automatically check payment status after 10 minutes
+        // Server will automatically check payment status after 3 minutes
         // and send invoice if payment not completed
         
         // Reset and close
-        setRegistrationData({ name: '', email: '', phone: '', address: '' });
+        setRegistrationData({ name: '', email: '', phone: '', street: '', city: '', state: '', zip: '' });
         setShowRegistrationModal(false);
       }
     } catch (error) {
