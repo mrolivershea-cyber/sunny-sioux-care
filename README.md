@@ -1,7 +1,10 @@
-# Sunny Sioux Care - Childcare Center Website
+# 🌞 Sunny Sioux Care - Childcare Center Website
 
 ![Sunny Sioux Care](https://img.shields.io/badge/status-production-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+
+**Live Site:** https://sunny-installer.preview.emergentagent.com  
+**Business Email:** info@sunnysiouxcare.com
 
 Professional childcare center website with integrated PayPal payments, automated invoice generation, and comprehensive management system.
 
