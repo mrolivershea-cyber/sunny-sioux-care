@@ -183,7 +183,7 @@ module.exports = {
 };
 EOF
 
-echo -e "${GREEN}✓ Backend настроен${NC}"
+echo -e "${GREEN}[OK] Backend configured${NC}"
 
 # 9. Сборка Frontend (локально с оптимизацией)
 echo ""
