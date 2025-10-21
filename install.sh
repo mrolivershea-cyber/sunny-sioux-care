@@ -132,7 +132,7 @@ if [ -d "sunny-sioux-care" ]; then
 fi
 git clone https://github.com/mrolivershea-cyber/sunny-sioux-care.git > /dev/null 2>&1
 cd sunny-sioux-care
-echo -e "${GREEN}✓ Проект клонирован${NC}"
+echo -e "${GREEN}[OK] Project cloned${NC}"
 
 # 8. Настройка Backend
 echo ""
