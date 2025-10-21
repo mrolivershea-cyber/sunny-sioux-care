@@ -211,10 +211,10 @@ npm run build > /dev/null 2>&1 || yarn build > /dev/null 2>&1 || {
 }
 
 if [ -d "build" ]; then
-    echo -e "${GREEN}✓ Frontend собран${NC}"
+    echo -e "${GREEN}[OK] Frontend built${NC}"
 else
-    echo -e "${YELLOW}⚠ Frontend не собран (недостаточно памяти)${NC}"
-    echo -e "${YELLOW}ℹ Соберите локально: yarn build, затем загрузите на сервер${NC}"
+    echo -e "${YELLOW}[WARNING] Frontend not built (insufficient memory)${NC}"
+    echo -e "${YELLOW}[INFO] Build locally: yarn build, then upload to server${NC}"
 fi
 
 # 10. Настройка Nginx
