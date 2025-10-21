@@ -154,9 +154,14 @@ Full deployment instructions available in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE
 
 ## 📖 Documentation
 
+- **[QUICK_INSTALL.md](QUICK_INSTALL.md)** - ⚡ Быстрая установка одной командой
+- **[HOW_TO_SAVE_TO_GITHUB.md](HOW_TO_SAVE_TO_GITHUB.md)** - 📤 Как сохранить проект в GitHub
 - **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Complete deployment instructions
+- **[MINIMAL_SERVER_SETUP.md](MINIMAL_SERVER_SETUP.md)** - Setup on minimal $4/month server
+- **[DOMAIN_AND_SERVER_SETUP.md](DOMAIN_AND_SERVER_SETUP.md)** - Domain and server configuration
 - **[CREDENTIALS_AND_CONFIG.md](CREDENTIALS_AND_CONFIG.md)** - All credentials and configuration
 - **[EMAIL_SETUP_INSTRUCTIONS.md](EMAIL_SETUP_INSTRUCTIONS.md)** - Email server setup
+- **[GITHUB_INSTRUCTIONS.md](GITHUB_INSTRUCTIONS.md)** - GitHub setup and management
 - **[contracts.md](contracts.md)** - API contracts and endpoints
 
 ## 🔐 Security
