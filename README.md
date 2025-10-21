@@ -55,17 +55,43 @@ Professional childcare center website with integrated PayPal payments, automated
 
 ## 📦 Installation
 
-### Prerequisites
+### ⚡ Быстрая автоматическая установка (РЕКОМЕНДУЕТСЯ)
+
+**Одна команда для полной установки на Ubuntu 22.04 сервер:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mrolivershea-cyber/sunny-sioux-care/main/install.sh | sudo bash
+```
+
+Скрипт автоматически:
+- ✅ Создаст SWAP (2GB)
+- ✅ Установит все зависимости
+- ✅ Настроит Nginx + SSL
+- ✅ Запустит Backend через PM2
+- ✅ Соберёт Frontend
+
+**Время установки: ~5-8 минут**
+
+📖 Подробнее: [QUICK_INSTALL.md](QUICK_INSTALL.md)
+
+---
+
+### 🛠️ Ручная установка
+
+<details>
+<summary>Развернуть инструкцию</summary>
+
+#### Prerequisites
 - Node.js 18+ and Yarn
 - Python 3.11+
-- MongoDB 7.0+
+- MongoDB Atlas (бесплатно) или локальный MongoDB 7.0+
 - Nginx
 
-### Quick Start
+#### Quick Start
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/sunny-sioux-care.git
+git clone https://github.com/mrolivershea-cyber/sunny-sioux-care.git
 cd sunny-sioux-care
 ```
 
@@ -90,14 +116,13 @@ cp .env.example .env
 
 4. **Start Services**
 ```bash
-# Start MongoDB
-sudo systemctl start mongod
-
 # Start Backend (with PM2)
 pm2 start ecosystem.config.js
 
 # Configure Nginx (see DEPLOYMENT_GUIDE.md)
 ```
+
+</details>
 
 ## ⚙️ Configuration
 
