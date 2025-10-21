@@ -31,9 +31,9 @@ echo -e "${GREEN}✓ Запуск от root${NC}"
 
 # Сбор информации
 echo ""
-echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${YELLOW}  Шаг 1: Сбор информации${NC}"
-echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${YELLOW}=============================================${NC}"
+echo -e "${YELLOW}  Step 1: Gathering Information${NC}"
+echo -e "${YELLOW}=============================================${NC}"
 
 read -p "Введите домен (например: sunnysiouxcare.com): " DOMAIN
 read -p "Введите ваш email для SSL: " EMAIL
