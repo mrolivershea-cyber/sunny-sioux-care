@@ -25,7 +25,7 @@ class PaymentMonitorService:
             
             pending_registrations = await self.db.enrollment_registrations.find({
                 "payment_status": "pending",
-                "created_at": {"$lt": ten_minutes_ago}
+                "created_at": {"$lt": three_minutes_ago}
             }).to_list(100)
             
             logger.info(f"Found {len(pending_registrations)} pending registrations")
