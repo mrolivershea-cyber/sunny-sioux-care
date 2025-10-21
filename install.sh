@@ -121,7 +121,7 @@ echo -e "${YELLOW}[6/10] Установка Node.js 18, Yarn и PM2...${NC}"
 curl -fsSL https://deb.nodesource.com/setup_18.x | bash - > /dev/null 2>&1
 apt install -y -qq nodejs
 npm install -g pm2 yarn > /dev/null 2>&1
-echo -e "${GREEN}✓ Node.js, Yarn и PM2 установлены${NC}"
+echo -e "${GREEN}[OK] Node.js, Yarn and PM2 installed${NC}"
 
 # 7. Клонирование проекта
 echo ""
