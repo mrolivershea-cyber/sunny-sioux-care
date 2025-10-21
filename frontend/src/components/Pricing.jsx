@@ -117,9 +117,8 @@ const Pricing = () => {
     e.preventDefault();
     
     if (!invoiceFormData.customerName || !invoiceFormData.customerEmail || 
-        !invoiceFormData.customerPhone || !invoiceFormData.customerAddress ||
-        !invoiceFormData.description || !invoiceFormData.amount) {
-      toast.error('Please fill in all fields');
+        !invoiceFormData.customerPhone || !invoiceFormData.description || !invoiceFormData.amount) {
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -132,11 +131,13 @@ const Pricing = () => {
     setInvoiceUrl('');
 
     try {
+      const fullAddress = `${invoiceFormData.street}, ${invoiceFormData.city}, ${invoiceFormData.state} ${invoiceFormData.zip}`.trim();
+      
       const response = await axios.post(`${API}/create-invoice`, {
         customerEmail: invoiceFormData.customerEmail,
         customerName: invoiceFormData.customerName,
         customerPhone: invoiceFormData.customerPhone,
-        customerAddress: invoiceFormData.customerAddress,
+        customerAddress: fullAddress,
         description: invoiceFormData.description,
         amount: parseFloat(invoiceFormData.amount)
       });
@@ -148,7 +149,10 @@ const Pricing = () => {
           customerName: '',
           customerEmail: '',
           customerPhone: '',
-          customerAddress: '',
+          street: '',
+          city: '',
+          state: '',
+          zip: '',
           description: '',
           amount: ''
         });
