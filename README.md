@@ -56,6 +56,9 @@ Professional childcare center website with integrated PayPal payments, automated
 - PM2 (process manager)
 - Let's Encrypt (SSL)
 - MongoDB (database)
+- **Postfix** (SMTP mail server)
+- **Dovecot** (IMAP/POP3 mail server)
+- **OpenDKIM** (email authentication)
 
 ## 📦 Installation
 
