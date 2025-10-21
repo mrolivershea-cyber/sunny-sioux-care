@@ -174,11 +174,20 @@ Full deployment instructions available in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE
 
 ## 📖 Documentation
 
-- **[QUICK_INSTALL.md](QUICK_INSTALL.md)** - ⚡ Быстрая установка одной командой
+### 🚀 Установка и обновление:
+- **[INSTALL_UPDATE_SCRIPTS.md](INSTALL_UPDATE_SCRIPTS.md)** - 🎯 Универсальные скрипты установки/обновления
+- **[QUICK_COMMANDS.md](QUICK_COMMANDS.md)** - ⚡ Шпаргалка - команды установки и обновления
+- **[GITHUB_PUSH_GUIDE.md](GITHUB_PUSH_GUIDE.md)** - 📤 Как отправить изменения в GitHub
+
+### 📧 Email и DNS:
 - **[EMAIL_SERVER_SUCCESS.md](EMAIL_SERVER_SUCCESS.md)** - ✅ Настройка почтового сервера
 - **[DNS_EMAIL_SETUP.md](DNS_EMAIL_SETUP.md)** - 📧 Детальная инструкция по DNS для почты
 - **[QUICK_DNS_SETUP.md](QUICK_DNS_SETUP.md)** - ⚡ Быстрая настройка DNS (10 минут)
 - **[EMAIL_CREDENTIALS.md](EMAIL_CREDENTIALS.md)** - 🔐 Учетные данные почты (не коммитить!)
+
+### 📚 Общая документация:
+- **[CHANGELOG_2025_10_21.md](CHANGELOG_2025_10_21.md)** - 📝 История изменений
+- **[QUICK_INSTALL.md](QUICK_INSTALL.md)** - ⚡ Быстрая установка одной командой
 - **[HOW_TO_SAVE_TO_GITHUB.md](HOW_TO_SAVE_TO_GITHUB.md)** - 📤 Как сохранить проект в GitHub
 - **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Complete deployment instructions
 - **[MINIMAL_SERVER_SETUP.md](MINIMAL_SERVER_SETUP.md)** - Setup on minimal $4/month server
