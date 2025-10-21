@@ -113,7 +113,7 @@ echo -e "${GREEN}[OK] Firewall configured${NC}"
 echo ""
 echo -e "${YELLOW}[5/10] Установка Python 3.11...${NC}"
 apt install -y -qq python3.11 python3.11-venv python3-pip
-echo -e "${GREEN}✓ Python 3.11 установлен${NC}"
+echo -e "${GREEN}[OK] Python 3.11 installed${NC}"
 
 # 6. Установка Node.js, Yarn и PM2
 echo ""
