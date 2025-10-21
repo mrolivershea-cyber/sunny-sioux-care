@@ -15,10 +15,10 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}"
-echo "╔═══════════════════════════════════════════╗"
-echo "║   Sunny Sioux Care - Auto Installer      ║"
-echo "║   Версия 1.0                             ║"
-echo "╚═══════════════════════════════════════════╝"
+echo "============================================="
+echo "    Sunny Sioux Care - Auto Installer"
+echo "    Version 1.0"
+echo "============================================="
 echo -e "${NC}"
 
 # Проверка root
