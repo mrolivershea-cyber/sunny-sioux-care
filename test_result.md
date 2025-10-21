@@ -104,6 +104,7 @@ user_problem_statement: |
   - Contact form submission (save to MongoDB)
   - PayPal invoice generation with custom amounts
   - PayPal credentials provided by user
+  - Full email server setup for info@sunnysiouxcare.com (SMTP + IMAP)
 
 backend:
   - task: "Contact form API endpoint"
