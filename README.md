@@ -145,7 +145,15 @@ DB_NAME=sunnysiouxcare_production
 PAYPAL_CLIENT_ID=your_client_id
 PAYPAL_CLIENT_SECRET=your_client_secret
 PAYPAL_MODE=live
-EMAIL_ENABLED=false
+
+# Email Configuration
+EMAIL_ENABLED=true
+SMTP_HOST=localhost
+SMTP_PORT=587
+SMTP_USER=info
+SMTP_PASSWORD=your_email_password
+FROM_EMAIL=info@sunnysiouxcare.com
+ADMIN_EMAIL=info@sunnysiouxcare.com
 ```
 
 ## 🚀 Deployment
