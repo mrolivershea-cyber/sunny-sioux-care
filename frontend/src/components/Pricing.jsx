@@ -26,7 +26,10 @@ const Pricing = () => {
     name: '',
     email: '',
     phone: '',
-    address: ''
+    street: '',
+    city: '',
+    state: '',
+    zip: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
