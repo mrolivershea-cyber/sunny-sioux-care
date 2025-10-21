@@ -97,7 +97,7 @@ echo -e "${GREEN}[OK] System updated${NC}"
 echo ""
 echo -e "${YELLOW}[3/10] Установка базовых пакетов...${NC}"
 apt install -y -qq curl wget git nano ufw nginx software-properties-common
-echo -e "${GREEN}✓ Базовые пакеты установлены${NC}"
+echo -e "${GREEN}[OK] Base packages installed${NC}"
 
 # 4. Настройка Firewall
 echo ""
