@@ -30,7 +30,8 @@ Professional childcare center website with integrated PayPal payments, automated
 - **RESTful API** - Fast and modern Python backend
 - **MongoDB Database** - Scalable NoSQL data storage
 - **Payment Monitoring** - Automated cron job checks payments every 10 minutes
-- **Email Notifications** - Automated email system (optional)
+- **Email Server** - Full SMTP/IMAP mail server with DKIM/SPF/DMARC
+- **Email Notifications** - Automated contact form and invoice notifications
 - **Data Management** - Complete enrollment and invoice tracking
 
 ## 🏗️ Tech Stack
