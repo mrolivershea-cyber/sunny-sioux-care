@@ -51,9 +51,9 @@ read -p "PayPal Client Secret: " PAYPAL_SECRET
 
 # Подтверждение
 echo ""
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${BLUE}  Проверьте данные:${NC}"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${BLUE}=============================================${NC}"
+echo -e "${BLUE}  Please verify your information:${NC}"
+echo -e "${BLUE}=============================================${NC}"
 echo "Домен: $DOMAIN"
 echo "Email: $EMAIL"
 echo "MongoDB URL: ${MONGO_URL:0:40}..."
