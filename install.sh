@@ -268,7 +268,7 @@ pm2 start ecosystem.config.js
 pm2 save
 pm2 startup | tail -1 | bash
 
-echo -e "${GREEN}✓ Backend запущен${NC}"
+echo -e "${GREEN}[OK] Backend started${NC}"
 
 # SSL сертификат
 echo ""
