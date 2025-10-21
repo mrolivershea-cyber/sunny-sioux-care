@@ -91,7 +91,7 @@ echo ""
 echo -e "${YELLOW}[2/10] Обновление системы...${NC}"
 apt update -qq
 DEBIAN_FRONTEND=noninteractive apt upgrade -y -qq
-echo -e "${GREEN}✓ Система обновлена${NC}"
+echo -e "${GREEN}[OK] System updated${NC}"
 
 # 3. Установка базовых пакетов
 echo ""
