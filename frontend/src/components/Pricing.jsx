@@ -39,7 +39,10 @@ const Pricing = () => {
     customerName: '',
     customerEmail: '',
     customerPhone: '',
-    customerAddress: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
     description: '',
     amount: ''
   });
