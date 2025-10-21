@@ -107,7 +107,7 @@ ufw allow OpenSSH
 ufw allow 80/tcp
 ufw allow 443/tcp
 ufw --force enable
-echo -e "${GREEN}✓ Firewall настроен${NC}"
+echo -e "${GREEN}[OK] Firewall configured${NC}"
 
 # 5. Установка Python 3.11
 echo ""
