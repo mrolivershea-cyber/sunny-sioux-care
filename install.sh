@@ -198,16 +198,16 @@ EOF
 # Установка зависимостей с оптимизацией памяти
 export NODE_OPTIONS="--max_old_space_size=400"
 npm install --production --no-optional > /dev/null 2>&1 || {
-    echo -e "${YELLOW}⚠ npm install не удался, пробуем yarn...${NC}"
+    echo -e "${YELLOW}[WARNING] npm install failed, trying yarn...${NC}"
     npm install -g yarn > /dev/null 2>&1
     yarn install --production --ignore-optional > /dev/null 2>&1
 }
 
 # Build
-echo -e "${YELLOW}   Сборка может занять 2-3 минуты...${NC}"
+echo -e "${YELLOW}   Build may take 2-3 minutes...${NC}"
 npm run build > /dev/null 2>&1 || yarn build > /dev/null 2>&1 || {
-    echo -e "${RED}✗ Сборка frontend не удалась${NC}"
-    echo -e "${YELLOW}ℹ Скачайте собранный frontend с локального компьютера${NC}"
+    echo -e "${RED}[ERROR] Frontend build failed${NC}"
+    echo -e "${YELLOW}[INFO] Download pre-built frontend from your local computer${NC}"
 }
 
 if [ -d "build" ]; then
