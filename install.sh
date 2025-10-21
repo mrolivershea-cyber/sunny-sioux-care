@@ -27,7 +27,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo -e "${GREEN}✓ Запуск от root${NC}"
+echo -e "${GREEN}[OK] Running as root${NC}"
 
 # Сбор информации
 echo ""
