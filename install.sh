@@ -115,13 +115,13 @@ echo -e "${YELLOW}[5/10] Установка Python 3.11...${NC}"
 apt install -y -qq python3.11 python3.11-venv python3-pip
 echo -e "${GREEN}✓ Python 3.11 установлен${NC}"
 
-# 6. Установка Node.js и PM2
+# 6. Установка Node.js, Yarn и PM2
 echo ""
-echo -e "${YELLOW}[6/10] Установка Node.js 18 и PM2...${NC}"
+echo -e "${YELLOW}[6/10] Установка Node.js 18, Yarn и PM2...${NC}"
 curl -fsSL https://deb.nodesource.com/setup_18.x | bash - > /dev/null 2>&1
 apt install -y -qq nodejs
-npm install -g pm2 > /dev/null 2>&1
-echo -e "${GREEN}✓ Node.js и PM2 установлены${NC}"
+npm install -g pm2 yarn > /dev/null 2>&1
+echo -e "${GREEN}✓ Node.js, Yarn и PM2 установлены${NC}"
 
 # 7. Клонирование проекта
 echo ""
