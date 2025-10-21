@@ -72,3 +72,7 @@ yarn-error.log
 # Archives
 *.tar.gz
 *.zip
+-e 
+# Environment files
+*.env
+*.env.*
