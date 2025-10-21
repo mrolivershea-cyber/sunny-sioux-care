@@ -277,10 +277,10 @@ apt install -y -qq certbot python3-certbot-nginx
 certbot --nginx -d ${DOMAIN} -d www.${DOMAIN} --non-interactive --agree-tos --email ${EMAIL} --redirect
 
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}✓ SSL сертификат установлен${NC}"
+    echo -e "${GREEN}[OK] SSL certificate installed${NC}"
 else
-    echo -e "${YELLOW}⚠ SSL сертификат не установлен (возможно DNS ещё не обновился)${NC}"
-    echo -e "${YELLOW}ℹ Запустите позже: certbot --nginx -d ${DOMAIN} -d www.${DOMAIN}${NC}"
+    echo -e "${YELLOW}[WARNING] SSL certificate not installed (DNS may not be updated yet)${NC}"
+    echo -e "${YELLOW}[INFO] Run later: certbot --nginx -d ${DOMAIN} -d www.${DOMAIN}${NC}"
 fi
 
 # Финал
