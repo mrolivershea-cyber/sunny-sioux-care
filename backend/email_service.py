@@ -140,13 +140,11 @@ Sioux City, IA 51104
 {self.admin_email}
         """
 
-        html_body = f"""<!DOCTYPE html>
-<html><body style="margin:0;padding:20px;background:#f5f5f5;font-family:Arial,sans-serif;">
-<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;padding:30px;text-align:center;">
-<h1 style="color:#f97316;margin:0 0 20px 0;">☀️ Sunny Sioux Care</h1>
-<h2 style="color:#333;margin:0 0 10px 0;">Invoice: ${amount:.2f} USD</h2>
-<p style="margin:0 0 20px 0;color:#666;">{description}</p>
-<a href="{invoice_url}" style="background:#f97316;color:#fff;padding:15px 40px;text-decoration:none;border-radius:25px;font-weight:bold;font-size:18px;display:inline-block;">Pay Invoice →</a>
-</div></body></html>"""
+        html_body = f"""<html><body style="font-family:Arial;padding:20px;text-align:center;">
+<h1 style="color:#f97316;">☀️ Sunny Sioux Care - Invoice ${amount:.2f}</h1>
+<p>{description}</p>
+<p><a href="{invoice_url}" style="background:#f97316;color:#fff;padding:15px 30px;text-decoration:none;border-radius:5px;font-size:16px;font-weight:bold;">PAY INVOICE NOW</a></p>
+<p style="font-size:12px;color:#666;">Questions? {self.admin_email}</p>
+</body></html>"""
 
         return self.send_email(customer_email, subject, body, html_body)
