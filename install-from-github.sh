@@ -135,12 +135,21 @@ install_system_dependencies() {
         python3.11-venv \
         python3-pip \
         nginx \
-        mongodb \
         supervisor \
         certbot \
         python3-certbot-nginx \
         ufw \
+        gnupg \
         build-essential
+    
+    # Установить MongoDB
+    log_info "Установка MongoDB 7.0..."
+    curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+    apt-get update -qq
+    apt-get install -y mongodb-org
+    systemctl enable mongod
+    systemctl start mongod
     
     # Установить Node.js 20
     if ! command -v node &> /dev/null || [ "$(node -v | cut -d'.' -f1 | sed 's/v//')" -lt 20 ]; then
