@@ -255,28 +255,6 @@ class PayPalService:
             logger.error(f"Error checking payment: {str(e)}")
             return False
 
-            url = f"{self.base_url}/v2/invoicing/invoices/{invoice_id}/send"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': f'{self.token_type} {self.access_token}'
-            }
-            
-            response = requests.post(url, headers=headers, json={})
-            
-            if response.status_code == 202:
-                logger.info(f"Successfully sent invoice: {invoice_id}")
-                return {'success': True}
-            else:
-                logger.error(f"Failed to send invoice: {response.status_code} - {response.text}")
-                return {
-                    'success': False,
-                    'error': f'Failed to send invoice: {response.status_code}'
-                }
-                
-        except Exception as e:
-            logger.error(f"Error sending invoice: {str(e)}")
-            return {'success': False, 'error': str(e)}
-
     def get_invoice_details(self, invoice_id: str) -> Optional[Dict]:
         """Get invoice details"""
         try:
