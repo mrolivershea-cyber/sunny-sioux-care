@@ -140,34 +140,13 @@ Sioux City, IA 51104
 {self.admin_email}
         """
 
-        html_body = f"""
-        <!DOCTYPE html>
-        <html>
-        <body style="margin:0;padding:20px;background:#f5f5f5;font-family:Arial,sans-serif;">
-            <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;">
-                <div style="background:linear-gradient(to right,#f97316,#fbbf24);padding:30px;text-align:center;">
-                    <h1 style="color:#fff;margin:0;font-size:28px;">☀️ Sunny Sioux Care</h1>
-                </div>
-                
-                <div style="padding:30px;">
-                    <h2 style="color:#f97316;margin:0 0 20px 0;">Your Invoice is Ready!</h2>
-                    
-                    <p style="margin:0 0 20px 0;">Hello, your invoice has been created successfully.</p>
-                    
-                    <div style="background:#fff7ed;padding:20px;border-radius:8px;margin:0 0 20px 0;border-left:4px solid #f97316;">
-                        <p style="margin:5px 0;"><strong>Service:</strong> {description}</p>
-                        <p style="margin:5px 0;"><strong>Amount:</strong> <span style="color:#f97316;font-size:24px;font-weight:bold;">${amount:.2f}</span> USD</p>
-                    </div>
-                    
-                    <div style="text-align:center;margin:20px 0;">
-                        <a href="{invoice_url}" style="background:linear-gradient(to right,#f97316,#fbbf24);color:#fff;padding:15px 40px;text-decoration:none;border-radius:25px;font-weight:bold;font-size:18px;display:inline-block;">View & Pay Invoice →</a>
-                    </div>
-                    
-                    <p style="color:#64748b;font-size:14px;margin:20px 0 0 0;">Questions? Contact us at <a href="mailto:{self.admin_email}" style="color:#f97316;">{self.admin_email}</a></p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
+        html_body = f"""<!DOCTYPE html>
+<html><body style="margin:0;padding:20px;background:#f5f5f5;font-family:Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;padding:30px;text-align:center;">
+<h1 style="color:#f97316;margin:0 0 20px 0;">☀️ Sunny Sioux Care</h1>
+<h2 style="color:#333;margin:0 0 10px 0;">Invoice: ${amount:.2f} USD</h2>
+<p style="margin:0 0 20px 0;color:#666;">{description}</p>
+<a href="{invoice_url}" style="background:#f97316;color:#fff;padding:15px 40px;text-decoration:none;border-radius:25px;font-weight:bold;font-size:18px;display:inline-block;">Pay Invoice →</a>
+</div></body></html>"""
 
         return self.send_email(customer_email, subject, body, html_body)
