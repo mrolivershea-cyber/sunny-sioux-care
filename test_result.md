@@ -156,27 +156,57 @@ backend:
 frontend:
   - task: "Contact form integration"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/components/Contact.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Contact form updated to call /api/contact. Includes loading states and error handling. Not yet tested."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED AND WORKING: Contact form successfully calls POST /api/contact endpoint. Form properly collects name, email, and message. API returns 200 OK. Form clears after successful submission. Tested with real data: name='Michael Brown', email='mrolivershea@gmail.com', message about enrolling 3-year-old daughter. Minor: Form fields use generic IDs (id='name', id='email') which could conflict with other forms on the same page."
 
   - task: "PayPal invoice form integration"
     implemented: true
-    working: "NA"
-    file: "/app/frontend/src/components/PayPalInvoice.jsx"
+    working: true
+    file: "/app/frontend/src/components/Pricing.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Invoice form updated to call /api/create-invoice. Displays invoice URL after creation. Includes loading states and error handling. Not yet tested."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED AND WORKING: Custom invoice form successfully calls POST /api/create-invoice endpoint. Form collects all required fields including name, email, phone, address (street, city, state, ZIP), description, and amount. API returns 200 OK with valid PayPal invoice URL. Success message displays correctly with clickable invoice link. Tested with real data: name='John Smith', email='mrolivershea@gmail.com', phone='(712) 555-9876', address='456 Oak Avenue, Sioux City, IA 51104', description='Registration Fee for Fall 2025', amount=$150.00. Invoice URL returned: https://www.paypal.com/invoice/p/#TMTQGDFHSS3CTCTH. All address fields (street, city, state, ZIP) present and working correctly."
+  
+  - task: "Pricing plan registration integration"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/Pricing.jsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL BUG: Registration modal has duplicate field IDs that conflict with contact form. When contact form is filled first, the registration modal fields get populated with contact form data due to shared IDs (id='name', id='email'). This causes validation errors like 'Please include an @ in the email address' when the name field contains an email. Registration form has all required fields (name, email, phone, address fields), but the ID conflict prevents proper testing. Form fields need unique IDs (e.g., id='reg-name', id='reg-email' for registration, id='contact-name', id='contact-email' for contact). Currently using id='reg-street', id='reg-city', id='reg-state', id='reg-zip' for address fields which is correct, but main fields (name, email, phone) use generic IDs."
+  
+  - task: "Emergent branding removal"
+    implemented: false
+    working: false
+    file: "/app/frontend/src"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ ISSUE: 'Made with Emergent' branding visible in footer. Found text 'Made with Emergent' in <P> tag. This should be removed as per requirements (no Emergent branding should be visible on sunnysiouxcare.com)."
 
 metadata:
   created_by: "main_agent"
