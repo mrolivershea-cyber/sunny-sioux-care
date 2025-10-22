@@ -140,12 +140,19 @@ Sioux City, IA 51104
 {self.admin_email}
         """
 
-        html_body = f"""<html><body style="font-family:Arial;padding:20px;">
-<h2 style="color:#f97316;margin:0 0 15px 0;">Sunny Sioux Care - Invoice</h2>
-<p style="margin:5px 0;"><strong>Service:</strong> {description}</p>
-<p style="margin:5px 0;"><strong>Amount:</strong> <span style="color:#f97316;font-size:20px;font-weight:bold;">${amount:.2f}</span> USD</p>
-<p style="margin:20px 0;"><a href="{invoice_url}" style="background:#f97316;color:#fff;padding:12px 30px;text-decoration:none;border-radius:5px;font-weight:bold;display:inline-block;">PAY INVOICE</a></p>
-<p style="font-size:12px;color:#666;margin:20px 0 0 0;">Questions? Contact {self.admin_email}</p>
+        html_body = f"""<html><body style="font-family:Arial;padding:20px;max-width:600px;">
+<div style="background:#f97316;color:#fff;padding:20px;text-align:center;border-radius:8px;margin-bottom:20px;">
+<h1 style="margin:0;">☀️ Sunny Sioux Care</h1>
+</div>
+<h2 style="color:#f97316;">Invoice ${amount:.2f} USD</h2>
+<p><strong>Service:</strong> {description}</p>
+<div style="text-align:center;margin:30px 0;">
+<a href="{invoice_url}" style="background:#f97316;color:#fff;padding:15px 40px;text-decoration:none;border-radius:5px;font-weight:bold;font-size:18px;display:inline-block;">PAY INVOICE NOW</a>
+</div>
+<p>Thank you for choosing Sunny Sioux Care!</p>
+<hr style="border:1px solid #eee;margin:20px 0;">
+<p style="font-size:12px;color:#666;">Sunny Sioux Care | 2110 Summit St, Sioux City, IA 51104</p>
+<p style="font-size:12px;color:#666;">Questions? {self.admin_email}</p>
 </body></html>"""
 
         return self.send_email(customer_email, subject, body, html_body)
