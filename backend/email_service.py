@@ -160,12 +160,13 @@ Sioux City, IA 51104
                 <div style="text-align: center; margin: 30px 0;">
                     <a href="{invoice_url}" 
                        style="background: linear-gradient(to right, #f97316, #fbbf24); 
-                              color: white; 
+                              color: white !important; 
                               padding: 15px 40px; 
-                              text-decoration: none; 
+                              text-decoration: none !important; 
                               border-radius: 25px; 
                               font-weight: bold;
-                              display: inline-block;">
+                              font-size: 16px;
+                              display: inline-block !important;">
                         View & Pay Invoice
                     </a>
                 </div>
