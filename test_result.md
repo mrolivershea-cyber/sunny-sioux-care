@@ -295,6 +295,174 @@ agent_communication:
 - From Email: info@sunnysiouxcare.com
 - Admin Email: info@sunnysiouxcare.com
 
+
+
+## E2E Testing Results - Testing Agent (2025-10-22 14:43-14:53)
+
+### Comprehensive E2E Testing Summary
+
+**Test Environment:**
+- Site URL: https://sunnysiouxcare.com
+- Preview URL: https://sunny-installer.preview.emergentagent.com
+- Testing Method: Playwright browser automation with network monitoring
+- Test Data: Real data as specified (mrolivershea@gmail.com, Sioux City addresses)
+
+**Tests Performed:**
+
+### 1. Custom Invoice Form Test ✅ PASSED
+- **Status:** WORKING
+- **Test Data:**
+  - Name: John Smith
+  - Email: mrolivershea@gmail.com
+  - Phone: (712) 555-9876
+  - Address: 456 Oak Avenue, Sioux City, IA 51104
+  - Description: Registration Fee for Fall 2025
+  - Amount: $150.00
+
+- **Results:**
+  - ✅ Form opens correctly when "Request Custom Invoice" clicked
+  - ✅ All fields present: name, email, phone, street, city, state, ZIP, description, amount
+  - ✅ Form accepts and validates input correctly
+  - ✅ API call made: POST /api/create-invoice
+  - ✅ API response: 200 OK
+  - ✅ Success message displayed: "Invoice created successfully!"
+  - ✅ Invoice URL displayed and clickable: https://www.paypal.com/invoice/p/#TMTQGDFHSS3CTCTH
+  - ✅ PayPal integration working (invoice created in PayPal system)
+  - ✅ All address fields (street, city, state, ZIP) present and functional
+
+### 2. Pricing Plan Registration Test ❌ FAILED
+- **Status:** CRITICAL BUG FOUND
+- **Test Data:**
+  - Plan: Toddler & Preschool ($950/month)
+  - Name: Sarah Johnson
+  - Email: mrolivershea@gmail.com
+  - Phone: (712) 555-1234
+  - Address: 789 Maple Drive, Sioux City, IA 51105
+
+- **Results:**
+  - ✅ Modal opens when "Select Plan" clicked for Toddler & Preschool
+  - ✅ All fields present: name, email, phone, street, city, state, ZIP
+  - ❌ **CRITICAL BUG:** Duplicate field IDs cause conflicts with contact form
+    - Registration modal uses: id="name", id="email", id="phone"
+    - Contact form uses: id="name", id="email"
+    - When contact form is filled first, registration modal fields get populated with wrong data
+    - Causes validation errors: "Please include an '@' in the email address"
+  - ❌ Cannot complete registration test due to field ID conflicts
+  - ⚠️ Registration modal remained visible after submission attempt (indicates failure)
+
+- **Fix Required:**
+  - Change registration modal field IDs to: id="reg-name", id="reg-email", id="reg-phone"
+  - Address fields already use correct unique IDs: id="reg-street", id="reg-city", id="reg-state", id="reg-zip"
+
+### 3. Contact Form Test ✅ PASSED
+- **Status:** WORKING
+- **Test Data:**
+  - Name: Michael Brown
+  - Email: mrolivershea@gmail.com
+  - Message: "I'm interested in enrolling my 3-year-old daughter. What are the available spots?"
+
+- **Results:**
+  - ✅ Form fields present and functional
+  - ✅ Form accepts input correctly
+  - ✅ API call made: POST /api/contact
+  - ✅ API response: 200 OK (verified in backend logs)
+  - ✅ Form submission successful
+  - ⚠️ Minor: Form fields use generic IDs (id="name", id="email") which conflict with registration modal
+
+### 4. Visual Checks ✅ PASSED (with 1 issue)
+- **Screenshots Captured:**
+  - ✅ Homepage hero section
+  - ✅ Pricing section with all 3 plans (Infant Care $1200, Toddler & Preschool $950, School-Age Care $600)
+  - ✅ Custom invoice form (empty and filled states)
+  - ✅ Registration modal
+  - ✅ Contact form
+
+- **Address Fields Verification:**
+  - ✅ Custom invoice form: Has street, city, state, ZIP fields
+  - ✅ Registration modal: Has street, city, state, ZIP fields
+  - ✅ All address fields properly labeled and functional
+
+- **Branding Check:**
+  - ❌ **ISSUE:** "Made with Emergent" text visible in footer
+  - Location: <P> tag in footer section
+  - Should be removed per requirements
+
+### 5. Backend Verification
+- **Database Check:**
+  - ✅ Contact submissions collection exists and working
+  - ✅ Invoice requests collection exists and working
+  - ⚠️ Enrollment registrations collection exists but empty (no successful registrations due to form bug)
+
+- **API Logs:**
+  - ✅ POST /api/contact: 200 OK (verified in backend.out.log)
+  - ✅ POST /api/create-invoice: 200 OK (verified via network monitoring)
+  - ❌ POST /api/register-enrollment: Not called (due to form validation errors)
+
+- **PayPal Integration:**
+  - ✅ PayPal API authentication working
+  - ✅ Invoice creation successful
+  - ✅ Valid invoice URLs returned
+  - ✅ Invoices created in DRAFT status (expected behavior)
+
+- **Email Service:**
+  - ✅ Email server configured and running
+  - ✅ SMTP/IMAP services active
+  - ✅ Email notifications enabled (EMAIL_ENABLED=true)
+  - ⚠️ External email delivery pending DNS setup by user
+
+### 6. Cron Job / Payment Monitor
+- **Status:** RUNNING
+- ✅ Payment monitoring scheduler active (runs every 10 minutes)
+- ✅ Checking for pending registrations
+- ⚠️ No registrations to monitor yet (due to registration form bug)
+
+### Critical Issues Found:
+
+1. **CRITICAL:** Registration modal field ID conflicts
+   - Impact: Cannot complete registration flow
+   - Priority: HIGH
+   - Fix: Change field IDs to unique values (reg-name, reg-email, reg-phone)
+
+2. **MEDIUM:** "Made with Emergent" branding visible
+   - Impact: Branding requirement not met
+   - Priority: MEDIUM
+   - Fix: Remove Emergent branding from footer
+
+### Working Features:
+
+1. ✅ Contact form - Full integration working
+2. ✅ Custom invoice form - Full integration working with PayPal
+3. ✅ All address fields present and functional
+4. ✅ PayPal invoice creation and URL generation
+5. ✅ Backend APIs responding correctly
+6. ✅ Database storage working
+7. ✅ Email server configured
+8. ✅ Payment monitoring cron job running
+
+### Test Coverage:
+
+- ✅ Form submissions with real data
+- ✅ API integration testing
+- ✅ Network request monitoring
+- ✅ Database verification
+- ✅ PayPal integration
+- ✅ UI/UX validation
+- ✅ Address field verification
+- ✅ Branding check
+- ❌ Registration flow (blocked by bug)
+- ❌ PayPal payment completion (not tested - requires live payment)
+
+### Recommendations:
+
+1. **IMMEDIATE:** Fix registration modal field ID conflicts to enable registration testing
+2. **IMMEDIATE:** Remove "Made with Emergent" branding from footer
+3. **OPTIONAL:** Consider adding data-testid attributes to form elements for more robust testing
+4. **OPTIONAL:** Add unique IDs to all form fields to prevent future conflicts
+
+agent_communication:
+  - agent: "testing"
+    message: "E2E testing completed. Found 1 CRITICAL bug (registration modal field ID conflicts) and 1 MEDIUM issue (Emergent branding). Contact form and custom invoice form both working correctly with full PayPal integration. All address fields present. Backend APIs responding correctly. Registration flow blocked by field ID conflicts - needs immediate fix."
+
 **Email Testing:**
 - ✅ Test email sent through Python email_service.py: SUCCESS
 - ✅ Email received in /home/info/Maildir/new/: VERIFIED
