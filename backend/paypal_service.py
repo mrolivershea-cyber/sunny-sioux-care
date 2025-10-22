@@ -184,7 +184,28 @@ class PayPalService:
     def send_invoice(self, invoice_id: str) -> Dict[str, Any]:
         """Send an invoice to the recipient"""
         try:
-
+            token = self.get_access_token()
+            if not token:
+                return {'success': False, 'error': 'Failed to get access token'}
+            
+            url = f"{self.base_url}/v2/invoicing/invoices/{invoice_id}/send"
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+            
+            response = requests.post(url, headers=headers)
+            
+            if response.status_code == 202:
+                logger.info(f"Successfully sent invoice {invoice_id}")
+                return {'success': True}
+            else:
+                logger.error(f"Failed to send invoice: {response.status_code} - {response.text}")
+                return {'success': False, 'error': response.text}
+                
+        except Exception as e:
+            logger.error(f"Error sending invoice: {str(e)}")
+            return {'success': False, 'error': str(e)}
 
     def check_recent_payment(self, customer_email: str, amount: float) -> bool:
         """Check if customer made a payment in last 10 minutes"""
