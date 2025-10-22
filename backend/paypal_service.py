@@ -184,6 +184,56 @@ class PayPalService:
     def send_invoice(self, invoice_id: str) -> Dict[str, Any]:
         """Send an invoice to the recipient"""
         try:
+
+
+    def check_recent_payment(self, customer_email: str, amount: float) -> bool:
+        """Check if customer made a payment in last 10 minutes"""
+        try:
+            token = self.get_access_token()
+            if not token:
+                return False
+            
+            # Get transactions from last 10 minutes
+            from datetime import datetime, timedelta
+            end_date = datetime.utcnow()
+            start_date = end_date - timedelta(minutes=10)
+            
+            url = f"{self.base_url}/v1/reporting/transactions"
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {token}'
+            }
+            params = {
+                'start_date': start_date.strftime('%Y-%m-%dT%H:%M:%S-0000'),
+                'end_date': end_date.strftime('%Y-%m-%dT%H:%M:%S-0000'),
+                'fields': 'all'
+            }
+            
+            response = requests.get(url, headers=headers, params=params)
+            
+            if response.status_code == 200:
+                data = response.json()
+                transactions = data.get('transaction_details', [])
+                
+                # Check if any transaction matches email and amount
+                for txn in transactions:
+                    payer_info = txn.get('payer_info', {})
+                    txn_amount = txn.get('transaction_info', {}).get('transaction_amount', {}).get('value', '0')
+                    
+                    if payer_info.get('email_address') == customer_email and float(txn_amount) == amount:
+                        logger.info(f"✅ Payment found for {customer_email} - ${amount}")
+                        return True
+                
+                logger.info(f"No payment found for {customer_email} - ${amount}")
+                return False
+            else:
+                logger.error(f"Failed to check transactions: {response.status_code}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error checking payment: {str(e)}")
+            return False
+
             url = f"{self.base_url}/v2/invoicing/invoices/{invoice_id}/send"
             headers = {
                 'Content-Type': 'application/json',
