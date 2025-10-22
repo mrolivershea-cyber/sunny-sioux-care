@@ -32,6 +32,27 @@ class PaymentMonitorService:
             
             for registration in pending_registrations:
                 try:
+                    # Сначала проверяем - может уже оплачено через прямую ссылку?
+                    payment_received = self.paypal_service.check_recent_payment(
+                        customer_email=registration['email'],
+                        amount=registration['plan_price']
+                    )
+                    
+                    if payment_received:
+                        # Оплата найдена - обновляем статус, НЕ создаем инвойс
+                        await self.db.enrollment_registrations.update_one(
+                            {"id": registration['id']},
+                            {"$set": {
+                                "payment_status": "paid",
+                                "updated_at": datetime.utcnow()
+                            }}
+                        )
+                        logger.info(f"✅ Payment confirmed for {registration['email']} - no invoice needed")
+                        continue
+                    
+                    # Оплаты НЕТ - создаем fallback invoice
+                    logger.info(f"No payment found for {registration['email']} - creating invoice...")
+                    
                     # Create PayPal invoice
                     result = self.paypal_service.create_invoice(
                         customer_email=registration['email'],
