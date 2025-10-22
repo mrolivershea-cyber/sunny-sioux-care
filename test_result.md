@@ -274,6 +274,8 @@ notes: |
 agent_communication:
   - agent: "testing"
     message: "Backend testing completed successfully. Both Contact Form API and PayPal Invoice API are working correctly. Fixed PayPal service to properly extract invoice ID from location header and recipient_view_url from invoice metadata. All APIs tested with realistic data and MongoDB storage verified. Ready for frontend integration testing if needed."
+  - agent: "testing"
+    message: "E2E testing completed on sunnysiouxcare.com. RESULTS: ✅ Contact form working (API integration verified). ✅ Custom invoice form working (all address fields present, PayPal integration working). ❌ CRITICAL BUG: Registration modal has duplicate field IDs (id='name', id='email', id='phone') that conflict with contact form, causing validation errors. Need to use unique IDs like id='reg-name', id='reg-email', id='reg-phone'. ❌ 'Made with Emergent' branding visible in footer - needs removal. All forms have proper address fields (street, city, state, ZIP). PayPal invoices creating successfully with valid URLs. Backend APIs responding correctly with 200 OK."
 ## Email Server Setup Results - Main Agent
 
 ### Setup Execution Summary (2025-10-21 11:05:00)
