@@ -518,6 +518,7 @@ main() {
     check_existing
     install_system_dependencies
     install_email_server
+    configure_email_server
     clone_repository
     setup_backend
     setup_frontend
