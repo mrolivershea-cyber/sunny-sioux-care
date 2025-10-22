@@ -203,13 +203,16 @@ frontend:
     implemented: false
     working: false
     file: "/app/frontend/src"
-    stuck_count: 0
-    priority: "medium"
+    stuck_count: 1
+    priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ ISSUE: 'Made with Emergent' branding visible in footer. Found text 'Made with Emergent' in <P> tag. This should be removed as per requirements (no Emergent branding should be visible on sunnysiouxcare.com)."
+      - working: false
+        agent: "testing"
+        comment: "❌ STILL PRESENT: 'Made with Emergent' branding still visible in bottom right corner of all pages. Verified on both https://sunnysiouxcare.com and https://sunny-installer.preview.emergentagent.com. The branding appears to be injected by Emergent platform scripts (emergent-main.js). This is a HIGH PRIORITY issue as it violates the requirement that no Emergent branding should be visible on the production site."
 
 metadata:
   created_by: "main_agent"
