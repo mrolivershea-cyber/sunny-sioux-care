@@ -497,6 +497,161 @@ All DNS records (MX, A, SPF, DKIM, DMARC) prepared and documented for user to ad
   - agent: "testing"
     message: "✅ REGISTRATION BUG FIXED! E2E testing completed on development environment (https://sunny-installer.preview.emergentagent.com). All three flows tested with REAL data: 1) Custom Invoice Form - WORKING (Michael Anderson, $200 invoice created, PayPal URL returned). 2) Registration Form - WORKING (Sarah Johnson registered for Toddler & Preschool $950/month, saved to MongoDB). 3) Contact Form - WORKING (Jennifer Martinez message saved to MongoDB). Field ID conflicts resolved with unique IDs. All APIs returning 200 OK and data verified in MongoDB. ❌ CRITICAL REMAINING ISSUE: 'Made with Emergent' branding still visible in bottom right corner - appears to be injected by emergent-main.js script. This is HIGH PRIORITY as it violates production requirements."
 
+
+## E2E Testing Results - Testing Agent (2025-10-22 15:00-15:16)
+
+### Complete E2E Test Execution Summary
+
+**Test Environment:**
+- Development URL: https://sunny-installer.preview.emergentagent.com
+- Production URL: https://sunnysiouxcare.com (also tested)
+- Testing Method: Playwright browser automation with network monitoring
+- Test Data: Real data as specified (mrolivershea@gmail.com, Sioux City addresses)
+
+**Tests Performed:**
+
+### 1. Custom Invoice Form Test ✅ PASSED
+- **Status:** WORKING
+- **Test Data:**
+  - Name: Michael Anderson
+  - Email: mrolivershea@gmail.com
+  - Phone: (712) 555-5678
+  - Address: 321 Pine Street, Sioux City, IA 51106
+  - Description: Enrollment Deposit for December 2025
+  - Amount: $200.00
+
+- **Results:**
+  - ✅ Form opens correctly when "Request Custom Invoice" clicked
+  - ✅ All fields present: name, email, phone, street, city, state, ZIP, description, amount
+  - ✅ Form accepts and validates input correctly
+  - ✅ API call made: POST /api/create-invoice
+  - ✅ API response: 200 OK
+  - ✅ Success message displayed: "Invoice created successfully!"
+  - ✅ Invoice URL displayed and clickable: https://www.paypal.com/invoice/p/#CQ62K3WXCWAU4CYB
+  - ✅ PayPal integration working (invoice created in PayPal system)
+  - ✅ All address fields (street, city, state, ZIP) present and functional
+  - ✅ Data verified in MongoDB: test_database.invoice_requests collection
+
+### 2. Pricing Plan Registration Test ✅ PASSED (BUG FIXED)
+- **Status:** WORKING (Previously FAILED due to field ID conflicts)
+- **Test Data:**
+  - Plan: Toddler & Preschool ($950/month)
+  - Name: Sarah Johnson
+  - Email: mrolivershea@gmail.com
+  - Phone: (712) 555-1234
+  - Address: 789 Maple Drive, Sioux City, IA 51105
+
+- **Results:**
+  - ✅ Modal opens when "Select Plan" clicked for Toddler & Preschool
+  - ✅ All fields present: name, email, phone, street, city, state, ZIP
+  - ✅ **BUG FIXED:** Field IDs now unique (id="reg-name", id="reg-email", id="reg-phone")
+  - ✅ No conflicts with contact form (previously caused validation errors)
+  - ✅ Form submission successful
+  - ✅ API call made: POST /api/register-enrollment
+  - ✅ API response: 200 OK
+  - ✅ Data verified in MongoDB: test_database.enrollment_registrations collection
+  - ✅ Registration entry: Sarah Johnson | mrolivershea@gmail.com | Toddler & Preschool | $950
+  - ⚠️ Minor: Success toast message not visible after submission (but API succeeds and data saves)
+
+### 3. Contact Form Test ✅ PASSED
+- **Status:** WORKING
+- **Test Data:**
+  - Name: Jennifer Martinez
+  - Email: mrolivershea@gmail.com
+  - Message: "Hello! I'm looking for childcare for my 2-year-old son starting in November. Do you have availability? Thank you!"
+
+- **Results:**
+  - ✅ Form fields present and functional
+  - ✅ Form accepts input correctly
+  - ✅ API call made: POST /api/contact
+  - ✅ API response: 200 OK
+  - ✅ Success toast displayed: "Thank you! We'll get back to you soon."
+  - ✅ Form clears after successful submission
+  - ✅ Data verified in MongoDB: test_database.contact_submissions collection
+  - ✅ Contact entry: Jennifer Martinez | mrolivershea@gmail.com
+
+### 4. Emergent Branding Check ❌ FAILED
+- **Status:** NOT FIXED
+- **Issue:** "Made with Emergent" branding visible in bottom right corner
+- **Location:** Appears to be injected by https://assets.emergent.sh/scripts/emergent-main.js
+- **Impact:** Violates requirement that no Emergent branding should be visible on production site
+- **Priority:** HIGH - This is a production requirement violation
+
+### Backend Verification:
+- **Database:** MongoDB test_database
+- **Collections Verified:**
+  - ✅ enrollment_registrations: 1 entry (Sarah Johnson)
+  - ✅ contact_submissions: 8 entries (including Jennifer Martinez)
+  - ✅ invoice_requests: 4 entries (including Michael Anderson)
+
+- **API Logs:**
+  - ✅ POST /api/contact: 200 OK
+  - ✅ POST /api/create-invoice: 200 OK
+  - ✅ POST /api/register-enrollment: 200 OK
+
+- **PayPal Integration:**
+  - ✅ PayPal API authentication working
+  - ✅ Invoice creation successful
+  - ✅ Valid invoice URLs returned
+  - ✅ Invoices created in DRAFT status (expected behavior)
+
+- **Email Service:**
+  - ✅ Email server configured and running
+  - ✅ SMTP/IMAP services active
+  - ✅ Email notifications enabled (EMAIL_ENABLED=true)
+
+- **Payment Monitor:**
+  - ✅ Cron job running (every 10 minutes)
+  - ✅ Checking for pending registrations
+  - ✅ Found 1 registration (Sarah Johnson) after test
+
+### Critical Issues Found:
+
+1. **HIGH PRIORITY:** Emergent branding still visible
+   - Impact: Production requirement violation
+   - Location: Bottom right corner, injected by emergent-main.js
+   - Fix Required: Remove or hide Emergent branding
+
+### Working Features:
+
+1. ✅ Contact form - Full integration working
+2. ✅ Custom invoice form - Full integration working with PayPal
+3. ✅ Registration form - Full integration working (BUG FIXED)
+4. ✅ All address fields present and functional
+5. ✅ PayPal invoice creation and URL generation
+6. ✅ Backend APIs responding correctly
+7. ✅ Database storage working
+8. ✅ Email server configured
+9. ✅ Payment monitoring cron job running
+10. ✅ Field ID conflicts resolved
+
+### Test Coverage:
+
+- ✅ Form submissions with real data
+- ✅ API integration testing
+- ✅ Network request monitoring
+- ✅ Database verification
+- ✅ PayPal integration
+- ✅ UI/UX validation
+- ✅ Address field verification
+- ✅ Field ID conflict resolution
+- ❌ Branding check (failed - Emergent branding still present)
+
+### Important Note About Production vs Development:
+
+**Development Environment (https://sunny-installer.preview.emergentagent.com):**
+- ✅ All APIs working correctly
+- ✅ Data saving to MongoDB successfully
+- ✅ All forms functional
+
+**Production Environment (https://sunnysiouxcare.com):**
+- ⚠️ APIs return 200 OK but data NOT saving to MongoDB
+- ⚠️ Appears to be using different backend or database
+- ⚠️ User requested testing on this domain, but it's not connected to the development backend
+
+**Recommendation:** Clarify with user which environment should be tested. The development environment (sunny-installer.preview.emergentagent.com) is fully functional, but the production domain (sunnysiouxcare.com) appears to be a separate deployment.
+
+
 2. Wait 15-30 minutes for DNS propagation
 3. Verify records using MXToolbox.com
 4. Test external email delivery
