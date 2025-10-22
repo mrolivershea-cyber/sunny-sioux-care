@@ -171,28 +171,33 @@ install_system_dependencies() {
 ###############################################################################
 
 install_email_server() {
-    log_info "Хотите установить почтовый сервер (Postfix + Dovecot + OpenDKIM)?"
-    read -p "Установить? (y/n): " -n 1 -r
-    echo
+    log_info "Установка почтового сервера (Postfix + Dovecot + OpenDKIM)..."
     
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        log_info "Установка почтового сервера..."
-        
-        DEBIAN_FRONTEND=noninteractive apt-get install -y \
-            postfix \
-            postfix-mysql \
-            dovecot-core \
-            dovecot-imapd \
-            dovecot-pop3d \
-            opendkim \
-            opendkim-tools \
-            mailutils
-        
-        log_success "Почтовый сервер установлен"
-        log_info "Для настройки см. EMAIL_SERVER_SUCCESS.md"
-    else
-        log_info "Почтовый сервер пропущен"
-    fi
+    # Установить пакеты
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        postfix \
+        dovecot-core \
+        dovecot-imapd \
+        dovecot-pop3d \
+        opendkim \
+        opendkim-tools \
+        mailutils
+    
+    # Создать email пользователя
+    EMAIL_USER="info"
+    EMAIL_PASSWORD=$(openssl rand -base64 24)
+    useradd -m -s /bin/bash "$EMAIL_USER" 2>/dev/null || true
+    echo "$EMAIL_USER:$EMAIL_PASSWORD" | chpasswd
+    mkdir -p /home/$EMAIL_USER/Maildir/{cur,new,tmp}
+    chown -R $EMAIL_USER:$EMAIL_USER /home/$EMAIL_USER/Maildir
+    chmod -R 700 /home/$EMAIL_USER/Maildir
+    
+    # Сохранить пароль
+    echo "$EMAIL_PASSWORD" > /root/email_password.txt
+    chmod 600 /root/email_password.txt
+    
+    log_success "Почтовый сервер установлен"
+    log_info "Email: info@sunnysiouxcare.com | Пароль в /root/email_password.txt"
 }
 
 ###############################################################################
