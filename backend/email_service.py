@@ -140,10 +140,12 @@ Sioux City, IA 51104
 {self.admin_email}
         """
 
-        html_body = f"""<html><body>
-<p><strong>Sunny Sioux Care - Invoice ${amount:.2f}</strong></p>
-<p>{description}</p>
-<p><a href="{invoice_url}" style="color:#f97316;font-size:18px;font-weight:bold;">CLICK HERE TO PAY INVOICE</a></p>
+        html_body = f"""<html><body style="font-family:Arial;padding:20px;">
+<h2 style="color:#f97316;margin:0 0 15px 0;">Sunny Sioux Care - Invoice</h2>
+<p style="margin:5px 0;"><strong>Service:</strong> {description}</p>
+<p style="margin:5px 0;"><strong>Amount:</strong> <span style="color:#f97316;font-size:20px;font-weight:bold;">${amount:.2f}</span> USD</p>
+<p style="margin:20px 0;"><a href="{invoice_url}" style="background:#f97316;color:#fff;padding:12px 30px;text-decoration:none;border-radius:5px;font-weight:bold;display:inline-block;">PAY INVOICE</a></p>
+<p style="font-size:12px;color:#666;margin:20px 0 0 0;">Questions? Contact {self.admin_email}</p>
 </body></html>"""
 
         return self.send_email(customer_email, subject, body, html_body)
