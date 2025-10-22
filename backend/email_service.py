@@ -216,15 +216,5 @@ Sioux City, IA 51104
         </body>
         </html>
         """
-                <div style="text-align: center; color: #94a3b8; font-size: 12px;">
-                    <p><strong>Sunny Sioux Care</strong></p>
-                    <p>2110 Summit St, Unit B1<br>
-                    Sioux City, IA 51104</p>
-                    <p>{self.admin_email}</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
 
         return self.send_email(customer_email, subject, body, html_body)
