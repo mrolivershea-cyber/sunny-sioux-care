@@ -88,7 +88,7 @@ class PayPalService:
                         "postal_code": "51104",
                         "country_code": "US"
                     },
-                    "email_address": "78janiijames31@mail.com"
+                    "email_address": "info@sunnysiouxcare.com"
                 },
                 "primary_recipients": [
                     {
