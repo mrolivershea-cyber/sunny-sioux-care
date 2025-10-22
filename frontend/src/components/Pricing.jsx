@@ -511,11 +511,11 @@ const Pricing = () => {
 
           <form onSubmit={handleRegistrationSubmit} className="space-y-4 mt-4">
             <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-semibold text-slate-700">
+              <label htmlFor="reg-name" className="text-sm font-semibold text-slate-700">
                 Full Name *
               </label>
               <Input
-                id="name"
+                id="reg-name"
                 name="name"
                 value={registrationData.name}
                 onChange={handleRegistrationChange}
@@ -527,11 +527,11 @@ const Pricing = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-semibold text-slate-700">
+              <label htmlFor="reg-email" className="text-sm font-semibold text-slate-700">
                 Email Address *
               </label>
               <Input
-                id="email"
+                id="reg-email"
                 name="email"
                 type="email"
                 value={registrationData.email}
@@ -544,11 +544,11 @@ const Pricing = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-semibold text-slate-700">
+              <label htmlFor="reg-phone" className="text-sm font-semibold text-slate-700">
                 Phone Number *
               </label>
               <Input
-                id="phone"
+                id="reg-phone"
                 name="phone"
                 type="tel"
                 value={registrationData.phone}
