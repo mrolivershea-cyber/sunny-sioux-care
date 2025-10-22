@@ -15,6 +15,7 @@ class EmailService:
         self.smtp_user = os.environ.get('SMTP_USER', '')
         self.smtp_password = os.environ.get('SMTP_PASSWORD', '')
         self.from_email = os.environ.get('FROM_EMAIL', 'noreply@sunnysiouxcare.com')
+        self.from_name = "Sunny Sioux Care"
         self.admin_email = os.environ.get('ADMIN_EMAIL', 'info@sunnysiouxcare.com')
         self.email_enabled = os.environ.get('EMAIL_ENABLED', 'false').lower() == 'true'
 
