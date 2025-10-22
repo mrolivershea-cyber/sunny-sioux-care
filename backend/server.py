@@ -161,7 +161,7 @@ async def create_enrollment(input: EnrollmentRegistrationCreate):
         await db.enrollment_registrations.insert_one(enrollment_obj.model_dump())
         
         logger.info(f"Enrollment registration created: {enrollment_obj.id}")
-        logger.info(f"⏰ Payment monitor will check status in 10 minutes")
+        logger.info("⏰ Payment monitor will check status in 10 minutes")
         
         return EnrollmentResponse(
             success=True,
