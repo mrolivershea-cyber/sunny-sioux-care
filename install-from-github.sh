@@ -194,6 +194,87 @@ install_email_server() {
     
     # Сохранить пароль
     echo "$EMAIL_PASSWORD" > /root/email_password.txt
+
+###############################################################################
+# Настройка почтового сервера
+###############################################################################
+
+configure_email_server() {
+    if [ ! -f /root/email_password.txt ]; then
+        log_info "Почтовый сервер не установлен, пропускаем настройку"
+        return
+    fi
+    
+    log_info "Настройка почтового сервера..."
+    
+    EMAIL_PASSWORD=$(cat /root/email_password.txt)
+    DOMAIN="sunnysiouxcare.com"
+    
+    # Настроить Postfix
+    cat > /etc/postfix/main.cf << 'EOFPOSTFIX'
+myhostname = mail.sunnysiouxcare.com
+mydomain = sunnysiouxcare.com
+myorigin = $mydomain
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+relayhost =
+mynetworks = 127.0.0.0/8
+inet_interfaces = all
+inet_protocols = all
+home_mailbox = Maildir/
+
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+EOFPOSTFIX
+
+    # Добавить submission порт
+    grep -q "^submission inet" /etc/postfix/master.cf || cat >> /etc/postfix/master.cf << 'EOFSUB'
+
+submission inet n - y - - smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=may
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_sasl_type=dovecot
+  -o smtpd_sasl_path=private/auth
+EOFSUB
+
+    # Настроить Dovecot
+    sed -i 's|mail_location = .*|mail_location = maildir:~/Maildir|' /etc/dovecot/conf.d/10-mail.conf 2>/dev/null || true
+    sed -i 's|#disable_plaintext_auth = yes|disable_plaintext_auth = yes|' /etc/dovecot/conf.d/10-auth.conf 2>/dev/null || true
+    sed -i 's|auth_mechanisms = plain|auth_mechanisms = plain login|' /etc/dovecot/conf.d/10-auth.conf 2>/dev/null || true
+    
+    # Простой 10-master.conf
+    cat > /etc/dovecot/conf.d/10-master.conf << 'EOFMASTER'
+service imap-login {
+  inet_listener imaps {
+    port = 993
+    ssl = yes
+  }
+}
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+}
+EOFMASTER
+
+    # Запустить сервисы
+    systemctl restart postfix dovecot 2>/dev/null || true
+    
+    log_success "Почтовый сервер настроен"
+}
+
     chmod 600 /root/email_password.txt
     
     log_success "Почтовый сервер установлен"
